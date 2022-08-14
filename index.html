@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to css file -->
+    <link rel="stylesheet" href="styles/main.css">
+
+    <!-- Link icons Material Design -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Title for the web -->
+    <title>API Crud Manager</title>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand"> 
+              <a class="navbar-item" href="/">
+                <span class="titleIcon material-icons md-35"> api </span>
+                <span class="titleText">Api Manager</span>
+              </a> 
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="crud-container" >
+            <div class="crud-header">
+                <h1><span class="material-icons md-18"> push_pin </span>Products list</h1>
+                <button class="button is-success" id="openRegisterModal"> 
+                    <span class="material-icons md-24"> note_add </span>
+                    <span> Add Product</span>
+                </button>
+            </div>
+
+            <!-- Tabla -->
+            <table class="table">
+                <thead class="table-header">
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Origen</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>MOQ</th>
+                    <th>Category</th>
+                    <th>Sales Unit</th>
+                    <th>Season</th>
+                    <th>Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>1</th>
+                    <th>Washington Apples</th>
+                    <th>UK / France</th>
+                    <th>3.50</th>
+                    <th>25</th>
+                    <th>6</th>
+                    <th>1</th>
+                    <th>Unit</th>
+                    <th>true</th>
+                    <th>
+                        <button class="button is-warning"><span class="material-icons md-24"> edit </span></button>
+                        <button class="button is-danger"><span class="material-icons md-24"> delete </span></button>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+
+        </div>
+    </main>
+
+    <!-- Card to insert new product -->
+    <div class="modal" id="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Insert new product</p>
+            <button class="delete" aria-label="close" id="closeRegisterModal"></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+            <form id="newProduct-form">
+
+
+
+
+              <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                  <input class="input" type="text" placeholder="Product Name">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Origen</label>
+                <div class="control">
+                  <input class="input" type="text" placeholder="Origen">
+                </div>
+              </div>
+
+
+              <table class="table" style="margin-bottom: 0rem !important;">
+                <tbody>
+                  <tr>
+                    <th style="padding: 0rem 0rem 1rem 0rem;">
+
+
+                      <div class="field">
+                        <label class="label">Price</label>
+                        <div class="control">
+                          <input class="input" type="number" placeholder="Price">
+                        </div>
+                      </div>   
+                      
+
+                    </th>
+                    <th style="padding: 0rem 0rem 0rem 1rem;">
+
+
+                      <div class="field">
+                        <label class="label">MOQ</label>
+                        <div class="control">
+                          <input class="input" type="number" placeholder="Minimum Quantity Order">
+                        </div>
+                      </div>
+
+
+                    </th>
+                  </tr>
+                </tbody>
+              </table>    
+
+                         
+
+              
+
+              <div class="field">
+                <label class="label">Category</label>
+                <div class="control">
+                  <div class="select">
+                    <select>
+                      <option>Select dropdown</option>
+                      <option>Fruits</option>
+                      <option>Vergetables</option>
+                      <option>Fresh Herbs</option>
+                      <option>Dried Fruits and Nusts</option>
+                      <option>Mushrooms</option>
+                      <option>Others</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Sales Unit</label>
+                <div class="control">
+                  <div class="select">
+                    <select>
+                      <option>Select dropdown</option>
+                      <option>Unit</option>
+                      <option>Kg</option>
+                      <option>g</option>
+                      <option>Bunsh</option>
+                    </select>
+                  </div>
+                </div>
+              </div>          
+
+              <table class="table" style="width: 100%;">
+                <thead class="table-header">
+                  <tr>
+                    <th>Is Available?</th>
+                    <th>Is Disable?</th>
+                    <th>Is Season?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>
+                      <div class="control">                
+                        <label class="radio">
+                          <input type="radio" name="AvailableCheck" checked>
+                          True
+                        </label>
+                        <label class="radio">
+                          <input type="radio" name="AvailableCheck">
+                          False
+                        </label>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="control">                
+                        <label class="radio">
+                          <input type="radio" name="DisableCheck">
+                          True
+                        </label>
+                        <label class="radio">
+                          <input type="radio" name="DisableCheck" checked>
+                          False
+                        </label>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="control">                
+                        <label class="radio">
+                          <input type="radio" name="SeasonCheck">
+                          Yes
+                        </label>
+                        <label class="radio">
+                          <input type="radio" name="SeasonCheck">
+                          No
+                        </label>
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>              
+
+              <div class="field">
+                <label class="label">Description</label>
+                <div class="control">
+                  <textarea class="textarea" placeholder="Textarea"></textarea>
+                </div>
+              </div>
+
+              <div class="file is-right is-info">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="resume">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">Choose file…</span>
+                  </span>
+                  <span class="file-name">
+                    Screen Shot 2017-07-29 at 15.54.25.png
+                  </span>
+                </label>
+              </div>
+              
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </form>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success">
+                <span class="material-icons md-24"> save </span>
+                <span> Insert </span>
+            </button>
+          </footer>
+        </div>
+      </div>
+
+    <!-- Link to Js file -->
+    <script src="js/app.js"></script>    
+</body>
+</html>

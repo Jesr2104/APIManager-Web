@@ -1,0 +1,119 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;700&display=swap');
+
+:root
+{
+    --dark: #001233;
+    --white: #fff;
+    --yellow: #ffb703;
+}
+
+/**************************************************/
+/* General directives                             */
+/**************************************************/
+.table
+{
+    width: 100%;
+}
+
+.titleText
+{
+    padding-left: .6rem;
+}
+
+.titleIcon
+{
+    padding-left: 0.8rem;
+}
+
+/**************************************************/
+/* Body                                           */
+/**************************************************/
+body
+{
+    font-family: 'Comfortaa', cursive;
+}
+
+/**************************************************/
+/* Header                                         */
+/**************************************************/
+.navbar
+{
+    background-color: var(--dark);
+}
+
+.navbar-item
+{
+    color: var(--white);
+    font-weight: bold;
+    font-size: 30px;
+    transition: .3s ease-in-out all;
+    /* Altura del nav-bar*/
+    height: 8vh;
+}
+
+.navbar-item:hover
+{
+    color: var(--yellow) !important;
+}
+
+/**************************************************/
+/* Main                                           */
+/**************************************************/
+
+.main-content
+{
+    /* altura del contenido principal*/
+    height: 92vh;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0 1rem 0 ;
+}
+
+.crud-container
+{
+    padding: 2rem 3rem;
+    width: 90%;
+    overflow: auto;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.4);
+    border-radius: 0.5rem;
+}
+
+.crud-header
+{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem 1rem 2rem;
+    border-bottom: 1px solid;
+}
+
+.crud-container h1
+{
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.button span 
+{
+    margin-left: 5px;
+}
+
+.material-icons.md-48
+{
+    font-size: 48px; 
+}
+
+.material-icons.md-35
+{
+    font-size: 35px; 
+}
+
+.material-icons.md-24
+{
+    font-size: 24px; 
+}
+
+.material-icons.md-18
+{
+    font-size: 18px; 
+}
