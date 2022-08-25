@@ -14,6 +14,11 @@
 
     <!-- Title for the web -->
     <title>API Crud Manager</title>
+
+    <!-- Import to Firebase library -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js"></script>
 </head>
 
 <body>
@@ -83,17 +88,18 @@
     <div class="modal" id="modal">
         <div class="modal-background"></div>
         <div class="modal-card">
+
+          <!-- header of the Card to insert new product -->
           <header class="modal-card-head">
             <p class="modal-card-title">Insert new product</p>
             <button class="delete" aria-label="close" id="closeRegisterModal"></button>
           </header>
+          
           <section class="modal-card-body">
             <!-- Content ... -->
             <form id="newProduct-form">
 
-
-
-
+              <!-- field product name -->
               <div class="field">
                 <label class="label">Name</label>
                 <div class="control">
@@ -101,6 +107,7 @@
                 </div>
               </div>
 
+              <!-- field origen -->
               <div class="field">
                 <label class="label">Origen</label>
                 <div class="control">
@@ -108,42 +115,35 @@
                 </div>
               </div>
 
-
+              <!-- table to share the space between two field -->
               <table class="table" style="margin-bottom: 0rem !important;">
                 <tbody>
                   <tr>
+                    <!-- style to use all space of the field -->
                     <th style="padding: 0rem 0rem 1rem 0rem;">
-
-
+                      <!-- field price -->
                       <div class="field">
                         <label class="label">Price</label>
                         <div class="control">
                           <input class="input" type="number" placeholder="Price">
                         </div>
-                      </div>   
-                      
-
+                      </div>                       
                     </th>
+                    <!-- style to use all space of the field -->
                     <th style="padding: 0rem 0rem 0rem 1rem;">
-
-
+                      <!-- field MOQ -->
                       <div class="field">
                         <label class="label">MOQ</label>
                         <div class="control">
                           <input class="input" type="number" placeholder="Minimum Quantity Order">
                         </div>
                       </div>
-
-
                     </th>
                   </tr>
                 </tbody>
-              </table>    
+              </table>                      
 
-                         
-
-              
-
+              <!-- Category -->
               <div class="field">
                 <label class="label">Category</label>
                 <div class="control">
@@ -161,6 +161,7 @@
                 </div>
               </div>
 
+              <!-- Sales Unit -->
               <div class="field">
                 <label class="label">Sales Unit</label>
                 <div class="control">
@@ -176,6 +177,7 @@
                 </div>
               </div>          
 
+              <!-- table to group the control checks -->
               <table class="table" style="width: 100%;">
                 <thead class="table-header">
                   <tr>
@@ -187,6 +189,7 @@
                 <tbody>
                   <tr>
                     <th>
+                      <!-- control check available -->
                       <div class="control">                
                         <label class="radio">
                           <input type="radio" name="AvailableCheck" checked>
@@ -199,6 +202,7 @@
                       </div>
                     </th>
                     <th>
+                      <!-- Control check disable -->
                       <div class="control">                
                         <label class="radio">
                           <input type="radio" name="DisableCheck">
@@ -211,6 +215,7 @@
                       </div>
                     </th>
                     <th>
+                      <!-- Control check Season -->
                       <div class="control">                
                         <label class="radio">
                           <input type="radio" name="SeasonCheck">
@@ -226,6 +231,7 @@
                 </tbody>
               </table>              
 
+              <!-- Description Field -->
               <div class="field">
                 <label class="label">Description</label>
                 <div class="control">
@@ -233,6 +239,7 @@
                 </div>
               </div>
 
+              <!-- File selector to choose the image of the product -->
               <div class="file is-right is-info">
                 <label class="file-label">
                   <input class="file-input" type="file" name="resume">
@@ -246,39 +253,22 @@
                     Screen Shot 2017-07-29 at 15.54.25.png
                   </span>
                 </label>
-              </div>
-              
-
-
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </form>
+              </div>            
           </section>
+
+          <!-- Footer of the form to insert new product -->
           <footer class="modal-card-foot">
-            <button class="button is-success">
+            <button type="submit" class="button is-success">
                 <span class="material-icons md-24"> save </span>
                 <span> Insert </span>
             </button>
+          </form>
           </footer>
+
         </div>
       </div>
 
-    <!-- Link to Js file -->
-    <script src="js/app.js"></script>    
+    <!-- Link to Js files -->
+    <script  src="js/app.js"></script>    
 </body>
 </html>
