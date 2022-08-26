@@ -117,3 +117,35 @@ body
 {
     font-size: 18px; 
 }
+
+.modal-card-title
+{
+    font-style: italic;
+    font-weight: bold;
+    font-weight: 900;
+}
+
+.label
+{
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+#display_image{
+    height: 200px;
+    border: #e8e8e8 solid 0.1rem;
+    background-color: #F5F5F5;
+    background-position: center;
+    background-size: cover;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+}
+
+.select_image
+{
+    font-size: 0.7rem;
+    font-style: italic;
+    font-weight: bold;
+}
