@@ -17,7 +17,7 @@ async function configuration(){
         appId: "1:496229318920:web:98f64838f81f9744a32cbd"
       };
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig)
+    firebase.initializeApp(firebaseConfig);
 }
 
 // function to check available
@@ -35,13 +35,136 @@ function checkSeason(){
     return checkSeasonButton.checked;
 }
 
+// function to call the input file button
+function defaultBtnActive(){
+    defaultBtn.click();
+}
+
+// function to load the image on the visor
+function loadImageOnVisor(){
+    const fileImg = this.files[0];
+    if(fileImg){
+        const reader = new FileReader();
+        reader.onload = function(){
+            const result = reader.result;
+            img.src = result;
+            wrapper.classList.add("active");
+        }
+        reader.readAsDataURL(fileImg)
+    }
+    if(this.value){
+        let valueStore = this.value;
+        fileName.textContent = valueStore
+    }
+}
+
+// function to clear the image of visor
+function clearImage(){
+    img.src = " "
+    wrapper.classList.remove("active")
+}
+
+// function to upload the picture of the imageProduct
+async function upLoadImaProduct(file){
+    // 1. referencia al espacio en el bucket donde estara el archivo
+    // 2. subir el archivo
+    // 3. retornar la referencia
+
+    try {
+        let storageRef = firebase.storage().ref().child(`${endPointStore}/${file.name}`);
+        await storageRef.put(file);
+
+        // get back the refernce store
+        return storageRef;
+    } catch (error) {
+        alert(error.message)        
+    }
+    return null    
+}
+
+// function to get the file
+function getFile(){
+    fileInput = document.querySelector("#default-btn")
+    let file = fileInput.files[0];
+
+    return file
+}
+
+// function to get all the products from the database a load it on the table
+function getAllDataFromDB(){
+    const dbRef = firebase.database().ref()
+    dbRef.child(endPointDB).get().then((snapshot) => {
+        if(snapshot.exists()) {
+            var productList = [];
+            snapshot.forEach(childSnapshot => {
+                productList.push(childSnapshot.val())                       
+            });
+            loadDataOnTable(productList)
+        } else { console.log("No data available") }
+    })
+    .catch ((error) => {
+        console.error(error);
+    })    
+}
+
+// function to get the code of the category
+function getCategory(categoryNumber){
+    switch(categoryNumber) {
+        case '0':
+          return "Others";
+        case '1':
+            return "Fruit";     
+        case '2':
+            return "Vegetables";
+        case '3':
+            return "Fresh Herbs";
+        case '4':
+            return "Dried Fruit & Nuts";
+        case '5':
+            return "Mushrooms";
+      }
+}
+
+// function to load the items of table from the database
+function loadDataOnTable(productList){
+    var cont = 1;
+    productList.forEach((products) => {
+
+        productTable.innerHTML += `
+            <tr>
+                <th>${cont}</th>
+                <th>${products.productName}</th>
+                <th>${products.origin}</th>
+                <th>${products.price}</th>
+                <th>${products.discount}</th>
+                <th>${products.MOQ}</th>
+                <th>${getCategory(products.category)}</th>
+                <th>${products.salesUnit}</th>
+                <th>
+                    <button class="button is-warning"><span class="material-icons md-24"> edit </span></button>
+                    <button class="button is-danger"><span class="material-icons md-24"> delete </span></button>
+                </th>
+            </tr>`
+        
+        cont++
+    })
+}
+
 // vars
 //--------------------------------------------------------------------------
-const endPointDB = 'NewProduct'
+const endPointDB = 'productListDB'
+const endPointStore = 'ImageStore'
 const openModal = document.getElementById('openRegisterModal')
 const modal = document.getElementById('modal')
 const closeModal = document.getElementById('closeRegisterModal')
 const newProductForm = document.getElementById('newProduct-form')
+const defaultBtn = document.getElementById('default-btn')
+const img = document.getElementById('Image-load')
+const cancelBtn = document.getElementById('cancel-btn')
+const productTable = document.getElementById('products-table')
+
+const fileName = document.querySelector('.fileName')
+const wrapper = document.querySelector('.wrapper')
 
 const checkAvailableButton = document.getElementById('isAvailableTrue')
 const checkDisableButton = document.getElementById('isDisableTrue')
@@ -52,7 +175,9 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
     // Events control -------------------->>>>
     openModal.addEventListener('click', showRegisterModal)
     closeModal.addEventListener('click', showRegisterModal)
-    newProductForm.addEventListener('submit', (e) => {
+    defaultBtn.addEventListener('change', loadImageOnVisor)
+    cancelBtn.addEventListener('click', clearImage)
+    newProductForm.addEventListener('submit', async (e) => {
 
         e.preventDefault()
 
@@ -74,7 +199,7 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
         const description = document.getElementById("description");
 
         // load image of the product
-        // const productImage = await upLoadImaProduct(getFile());          
+        var imageProduct = await upLoadImaProduct(getFile());          
 
         // refence of the data base
         const productRef = firebase.database().ref(endPointDB)
@@ -86,9 +211,8 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
             Boolean(price.value) &&
             Boolean(discount.value) &&
             !(category.value === "Select category") &&
-            !(salesUnit.value === "Select option") /* &&
-            Boolean(productImage.value)
-            */
+            !(salesUnit.value === "Select option") &&
+            imageProduct != null
         ){
             postRef.set({
                 idProduct: uuid.v4(),
@@ -103,6 +227,7 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
                 isDisable: checkDisable(),
                 inSeason: checkSeason(),
                 description: description.value,
+                imageProduct: String(imageProduct)
             });
     
             alert("Successfully inserted")
@@ -116,4 +241,6 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
 
     // Function call  -------------------->>>>
     configuration()
+
+    getAllDataFromDB()
 //--------------------------------------------------------------------------

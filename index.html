@@ -61,26 +61,10 @@
                     <th>MOQ</th>
                     <th>Category</th>
                     <th>Sales Unit</th>
-                    <th>Season</th>
                     <th>Options</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th>1</th>
-                    <th>Washington Apples</th>
-                    <th>UK / France</th>
-                    <th>3.65</th>
-                    <th>25</th>
-                    <th>6</th>
-                    <th>1</th>
-                    <th>Unit</th>
-                    <th>true</th>
-                    <th>
-                        <button class="button is-warning"><span class="material-icons md-24"> edit </span></button>
-                        <button class="button is-danger"><span class="material-icons md-24"> delete </span></button>
-                    </th>
-                  </tr>
+                <tbody id="products-table">
                 </tbody>
               </table>
 
@@ -166,12 +150,12 @@
                       <div class="select">
                         <select id="category">
                           <option>Select category</option>
-                          <option value="0">Fruits</option>
-                          <option value="1">Vergetables</option>
-                          <option value="2">Fresh Herbs</option>
-                          <option value="3">Dried Fruits and Nusts</option>
-                          <option value="4">Mushrooms</option>
-                          <option value="5">Others</option>
+                          <option value="1">Fruits</option>
+                          <option value="2">Vergetables</option>
+                          <option value="3">Fresh Herbs</option>
+                          <option value="4">Dried Fruits and Nusts</option>
+                          <option value="5">Mushrooms</option>
+                          <option value="0">Others</option>
                         </select>
                       </div>
                     </div>
@@ -257,12 +241,25 @@
                   </tr>
                 </tbody>
               </table>
-              
-              <!-- File selector to choose the image of the product -->
-              <div id="display_image">
-                  <span class="select_image"> Choose a file...</span>
-              </div>
 
+              <!-- Complement to select and show product image -->
+              <div class="image-selector">
+                <div class="container">
+                  <div class="wrapper">
+                    <div class="image">
+                      <img id="Image-load" src=" " alt="">
+                    </div>
+                    <div class="content">
+                      <div class="icon"><span class="material-icons md-48"> cloud_upload </span></div>
+                      <div class="text">No file chosen, yet!</div>
+                    </div>
+                    <div id="cancel-btn"><span class="material-icons md-18"> close </span></div>
+                    <div class="fileName">File name here</div>
+                  </div>
+                  <input id="default-btn" type="file" hidden accept="image/png, image/jpg">
+                  <button type="button" onclick="defaultBtnActive()" id="custom-btn">Choose a file</button>
+                </div>
+              </div>
           </section>
 
           <!-- Footer of the form to insert new product -->
@@ -273,7 +270,6 @@
             </button>
           </form>
           </footer>
-
         </div>
       </div>
 
