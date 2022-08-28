@@ -122,18 +122,24 @@ function getCategory(categoryNumber){
             return "Dried Fruit & Nuts";
         case '5':
             return "Mushrooms";
-      }
+    }
+}
+
+//function to remove product from database
+function remoreProductFromDataBase(uid){
+    firebase.database().ref(`${endPointDB}/${uid}`).remove()
 }
 
 // function to load the items of table from the database
 function loadDataOnTable(productList){
     var cont = 1;
+    productTable.innerHTML = ""
+    
     productList.forEach((products) => {
-
         productTable.innerHTML += `
             <tr>
                 <th>${cont}</th>
-                <th>${products.productName}</th>
+                <th><a href="url">${products.productName}</a></th>
                 <th>${products.origin}</th>
                 <th>${products.price}</th>
                 <th>${products.discount}</th>
@@ -141,13 +147,26 @@ function loadDataOnTable(productList){
                 <th>${getCategory(products.category)}</th>
                 <th>${products.salesUnit}</th>
                 <th>
-                    <button class="button is-warning"><span class="material-icons md-24"> edit </span></button>
-                    <button class="button is-danger"><span class="material-icons md-24"> delete </span></button>
+                    <button class="button is-warning" id="${products.Uid}"><span class="material-icons md-24"> edit </span></button>
+                    <button class="button is-danger" id="${products.Uid}"><span class="material-icons md-24"> delete </span></button>
                 </th>
-            </tr>`
-        
+            </tr>`        
         cont++
+
+        // set to the button to delete
+        const deleteButtons = document.querySelectorAll('.is-danger')
+        deleteButtons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                remoreProductFromDataBase(e.currentTarget.id)
+            })
+        })
     })
+}
+
+// function to getPostId
+function getPostId(fullPath){
+    const myData = fullPath.split("/")
+    return myData[4]
 }
 
 // vars
@@ -203,7 +222,7 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
 
         // refence of the data base
         const productRef = firebase.database().ref(endPointDB)
-        const postRef = productRef.push()
+        const postRef = productRef.push() 
 
         // check the mandatory fields -> Product name, origin, price, discount, category, salesUnit, productImage 
         if(Boolean(productName.value) &&
@@ -213,8 +232,9 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
             !(category.value === "Select category") &&
             !(salesUnit.value === "Select option") &&
             imageProduct != null
-        ){
+        ){  
             postRef.set({
+                Uid: getPostId(postRef.toString()),
                 idProduct: uuid.v4(),
                 productName: productName.value,
                 origin: origin.value,
@@ -229,18 +249,14 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
                 description: description.value,
                 imageProduct: String(imageProduct)
             });
-    
-            alert("Successfully inserted")
-            showRegisterModal()        
+
+            showRegisterModal()
+            getAllDataFromDB()   
         } 
-        else
-        {
-            alert('Any of the required fields are empty!!')
-        }
+        else{ alert('Any of the required fields are empty!!') }
     })
 
     // Function call  -------------------->>>>
     configuration()
-
     getAllDataFromDB()
 //--------------------------------------------------------------------------
