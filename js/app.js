@@ -162,7 +162,26 @@ function loadDataOnTable(productList){
         const deleteButtons = document.querySelectorAll('.is-danger')
         deleteButtons.forEach((button) => {
             button.addEventListener('click', (e) => {
-                remoreProductFromDataBase(e.currentTarget.id)
+                var idbutton = e.currentTarget.id
+
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this product!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  .then((willDelete) => {
+                    if (willDelete) {
+                        remoreProductFromDataBase(idbutton)
+                        getAllDataFromDB()
+                        swal("Poof! Your product has been deleted!", {
+                        icon: "success",
+                      });
+                    } else {
+                      swal("Your product is safe!");
+                    }
+                  });
             })
         })
     })
@@ -200,7 +219,6 @@ function deleteImageProduct(Uid){
         }
     })   
 }
-
 
 // vars
 //--------------------------------------------------------------------------
