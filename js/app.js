@@ -100,7 +100,11 @@ function getAllDataFromDB(){
                 productList.push(childSnapshot.val())                       
             });
             loadDataOnTable(productList)
-        } else { console.log("No data available") }
+        } else { 
+            // case: data base is empty
+            console.log("No data available")
+            productTable.innerHTML = ""
+        }
     })
     .catch ((error) => {
         console.error(error);
@@ -126,15 +130,16 @@ function getCategory(categoryNumber){
 }
 
 //function to remove product from database
-function remoreProductFromDataBase(uid){
-    firebase.database().ref(`${endPointDB}/${uid}`).remove()
+function remoreProductFromDataBase(Uid){
+    deleteImageProduct(Uid)
+    firebase.database().ref(`${endPointDB}/${Uid}`).remove()
 }
 
 // function to load the items of table from the database
 function loadDataOnTable(productList){
     var cont = 1;
     productTable.innerHTML = ""
-    
+
     productList.forEach((products) => {
         productTable.innerHTML += `
             <tr>
@@ -168,6 +173,34 @@ function getPostId(fullPath){
     const myData = fullPath.split("/")
     return myData[4]
 }
+
+// function to delete de imageProduct from the storage
+function deleteImageProduct(Uid){
+    var productList = [];
+    var fileName = "";
+    const dbRef = firebase.database().ref();
+    const storageRef = firebase.storage().ref();
+
+    // get que name of the imagen product
+    dbRef.child(endPointDB).get().then((snapshot) => {
+        if(snapshot.exists()) {
+            snapshot.forEach(childSnapshot => {
+                productList.push(childSnapshot.val())
+            })
+            
+            productList.forEach((item) => {
+                if(item.Uid == Uid){
+                    fileName = item.imageProduct.split("/")[4];
+
+                    // create reference to the store of the product Image
+                    var desertRef = storageRef.child(`${endPointStore}/${fileName}`);
+                    desertRef.delete();
+                }
+            })
+        }
+    })   
+}
+
 
 // vars
 //--------------------------------------------------------------------------
