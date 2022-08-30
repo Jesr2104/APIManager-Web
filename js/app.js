@@ -5,6 +5,11 @@ const showRegisterModal = () => {
     modal.classList.toggle('is-active')
 }
 
+// function to show the field to update product
+const showUpdateModal = () => {
+    updateModal.classList.toggle('is-active')
+}
+
 // function to do Firebase Configuration
 async function configuration(){
     const firebaseConfig = {
@@ -68,14 +73,14 @@ function clearImage(){
 async function upLoadImaProduct(file){
     // 1. referencia al espacio en el bucket donde estara el archivo
     // 2. subir el archivo
-    // 3. retornar la referencia
+    // 3. retornar la Url de la imagen
 
     try {
         let storageRef = firebase.storage().ref().child(`${endPointStore}/${file.name}`);
+        // insert image
         await storageRef.put(file);
-
-        // get back the refernce store
-        return storageRef;
+        // and before to return the value download the url from the server and return the value
+        return await firebase.storage().ref(`${endPointStore}/${file.name}`).getDownloadURL();
     } catch (error) {
         alert(error.message)        
     }
@@ -158,7 +163,7 @@ function loadDataOnTable(productList){
             </tr>`        
         cont++
 
-        // set to the button to delete
+        // set to the button to delete product
         const deleteButtons = document.querySelectorAll('.is-danger')
         deleteButtons.forEach((button) => {
             button.addEventListener('click', (e) => {
@@ -181,7 +186,74 @@ function loadDataOnTable(productList){
                     } else {
                       swal("Your product is safe!");
                     }
-                  });
+                });
+            })
+        })
+
+        // set to the button to update product
+        const updateButtons = document.querySelectorAll('.is-warning')
+        updateButtons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                var idbutton = e.currentTarget.id
+                showUpdateModal()
+
+                firebase
+                .database()
+                .ref(`${endPointDB}/${idbutton}`)
+                .once('value')
+                .then((thisProduct) => {
+                    const data = thisProduct.val()
+                    
+                    updateProductForm['productName'].value = data.productName;
+                    updateProductForm['origin'].value = data.origin;
+                    updateProductForm['price'].value = data.price; 
+                    updateProductForm['MOQ'].value = data.MOQ;
+                    updateProductForm['discount'].value = data.discount;
+                    updateProductForm['category'].value = data.category; 
+                    updateProductForm['salesUnit'].value = data.salesUnit; 
+                    updateProductForm['description'].value = data.description;
+
+                    updateProductForm['isAvailable'] = data.isAvailable;
+                    updateProductForm['isDisable'] = data.isDisable;
+                    updateProductForm['inSeason'] = data.inSeason;
+                    
+                    imgUpdateForm.src = data.imageProduct;  
+
+
+                    updateProductForm.addEventListener('submit', (e) => {
+                        e.preventDefault()
+    
+                        const productName = updateProductForm['productName'].value
+                        const origin = updateProductForm['origin'].value
+                        const price = updateProductForm['price'].value
+                        const MOQ = updateProductForm['MOQ'].value
+                        const discount = updateProductForm['discount'].value
+                        const category = updateProductForm['category'].value
+                        const salesUnit = updateProductForm['salesUnit'].value
+                        const description = updateProductForm['description'].value
+    
+                        const isAvailable = updateProductForm['isAvailable']
+                        const isDisable = updateProductForm['isDisable']
+                        const inSeason = updateProductForm['inSeason']
+    
+                        console.log(idbutton)
+                        firebase.database().ref(`${endPointDB}/${idbutton}`).update({
+                            productName: productName,
+                            origin: origin,
+                            price: price,
+                            MOQ: MOQ,
+                            discount: discount,
+                            category: category,
+                            salesUnit: salesUnit,
+                            isAvailable: isAvailable,
+                            isDisable: isDisable,
+                            inSeason: inSeason,
+                            description: description,
+                        })              
+                        showUpdateModal()
+                    })
+                })
+                
             })
         })
     })
@@ -226,10 +298,14 @@ const endPointDB = 'productListDB'
 const endPointStore = 'ImageStore'
 const openModal = document.getElementById('openRegisterModal')
 const modal = document.getElementById('modal')
+const updateModal = document.getElementById('modal-update')
 const closeModal = document.getElementById('closeRegisterModal')
+const closeUpdateModal = document.getElementById('closeUpdateModal')
 const newProductForm = document.getElementById('newProduct-form')
+const updateProductForm = document.getElementById('updateProduct-form')
 const defaultBtn = document.getElementById('default-btn')
 const img = document.getElementById('Image-load')
+const imgUpdateForm = document.getElementById('Image-load-udate-form')
 const cancelBtn = document.getElementById('cancel-btn')
 const productTable = document.getElementById('products-table')
 
@@ -245,6 +321,7 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
     // Events control -------------------->>>>
     openModal.addEventListener('click', showRegisterModal)
     closeModal.addEventListener('click', showRegisterModal)
+    closeUpdateModal.addEventListener('click', showUpdateModal)
     defaultBtn.addEventListener('change', loadImageOnVisor)
     cancelBtn.addEventListener('click', clearImage)
     newProductForm.addEventListener('submit', async (e) => {
@@ -261,11 +338,6 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
 
         const category = document.getElementById("category");
         const salesUnit = document.getElementById("salesUnit");
-
-        const isAvailable = document.getElementById("isAvailable");
-        const isDisable = document.getElementById("isDisable");
-        const inSeason = document.getElementById("inSeason");
-        
         const description = document.getElementById("description");
 
         // load image of the product
@@ -302,7 +374,17 @@ const checkSeasonButton = document.getElementById('inSeasonTrue')
             });
 
             showRegisterModal()
-            getAllDataFromDB()   
+            getAllDataFromDB()
+
+            productName.value = "";
+            origin.value = "";
+            price.value = "";
+            MOQ.value = "";
+            discount.value = "";
+            category.value = "Select category";
+            salesUnit.value = "Select option";
+            description.value = "";
+            clearImage();
         } 
         else{ alert('Any of the required fields are empty!!') }
     })
