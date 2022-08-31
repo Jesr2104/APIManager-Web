@@ -1,3 +1,19 @@
+/**
+---------------------------------------------------------------------------------------------------
+Lista de tareas por realizar
+---------------------------------------------------------------------------------------------------
+
+1. terminar el formulario de modificar, que permita modificar todos los campos execto la foto
+2. permitir que modificar permita cambiar la foto del producto
+    a) seleccionar foto nueva
+    b) cambiarla en el visor de imagenes 
+    c) eliminar la foto anterior del storage the imagenes
+3. eliminar el borde de la imagen en el visor de añadir nuevo producto
+4. crear visor para mostrar el objeto completo con todos sus atributos detallados 
+
+---------------------------------------------------------------------------------------------------
+**/
+
 // vars
 //--------------------------------------------------------------------------
 const endPointDB = 'productListDB'
@@ -19,23 +35,16 @@ const productTable = document.getElementById('products-table')
 const fileName = document.querySelector('.fileName')
 const wrapper = document.querySelector('.wrapper')
 
-const checkAvailableButton = document.getElementById('isAvailableTrue')
-const checkDisableButton = document.getElementById('isDisableTrue')
-const checkSeasonButton = document.getElementById('inSeasonTrue')
-
 // Const to form -> Insert new product
 //------------------------------------
 const productName = document.getElementById("productName");
 const origin = document.getElementById("origin");
-
 const price = document.getElementById("price");
 const MOQ = document.getElementById("MOQ");
 const discount = document.getElementById("discount");
-
 const category = document.getElementById("category");
 const salesUnit = document.getElementById("salesUnit");
 const description = document.getElementById("description");
-
 
 // Functions
 //--------------------------------------------------------------------------
@@ -98,7 +107,6 @@ function buttonEdit(idbutton){
     })
 }
 
-
 // function to clear all the form fields
 function clearInsertForm(){
     productName.value = "";
@@ -114,14 +122,26 @@ function clearInsertForm(){
 
 
 
-function myFun()
+
+
+
+
+
+// function to get the informa
+function getCheckValue(formValue)
 {
-    var result = document.getElementById("isAvailableCheck").checked;
-    console.log(result)
+    switch(formValue){
+        case 0:
+            var resultCheck = document.getElementById("isAvailableCheck").checked;
+            return resultCheck
+        case 1:
+            var resultCheck = document.getElementById("isDisableCheck").checked;
+            return resultCheck
+        case 2:
+            var resultCheck = document.getElementById("isSeasonCheck").checked;
+            return resultCheck
+    }
 }
-
-
-
 
 // function to do Firebase Configuration
 async function configuration(){
@@ -368,9 +388,9 @@ function getAllDataFromDB(){
                 discount: discount.value,
                 category: category.value,
                 salesUnit: salesUnit.value,
-                isAvailable: availableSwitch,
-                isDisable: checkDisableButton.checked,
-                inSeason: checkSeasonButton.checked,
+                isAvailable: getCheckValue(0),
+                isDisable: getCheckValue(1),
+                inSeason: getCheckValue(2),
                 description: description.value,
                 imageProduct: String(imageProduct)
             });

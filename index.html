@@ -182,6 +182,29 @@
                   </div>                  
                 </th>
               </table>
+
+              <!-- complement to show the checkBoxs for: Available, Disable and InSeason -->
+              <fieldset>
+                <legend> Choose you features...</legend>
+
+                <!-- Control check Available -->
+                <div class="switch" style="display: flex;">
+                  <label style="padding-right: 10px;">Available</label>
+                  <input type="checkbox" id="isAvailableCheck" checked>                        
+                </div>
+
+                <!-- Control check disable -->
+                <div class="switch" style="display: flex;">
+                  <label style="padding-right: 10px;">Disable</label>
+                  <input type="checkbox" id="isDisableCheck">                        
+                </div>
+
+                <!-- Control check Season -->
+                <div class="switch" style="display: flex;">
+                  <label style="padding-right: 10px;">Season</label>
+                  <input type="checkbox" id="isSeasonCheck">                        
+                </div>
+              </fieldset> 
               
               <!-- Description Field -->
               <div class="field">
@@ -189,67 +212,7 @@
                 <div class="control">
                   <textarea class="textarea" id="description" placeholder="Product Description..."></textarea>
                 </div>
-              </div>
-
-              <!-- table to group the control checks -->
-              <table class="table" style="width: 100%;">
-                <thead class="table-header">
-                  <tr>
-                    <th> <span class="label">Is Available?</span> </th>
-                    <th> <span class="label">Is Disable?</span> </th>
-                    <th> <span class="label">Is Season?</span> </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>
-                      <!-- control check available -->
-                      <div class="control label" id="isAvailable">                
-                        <label class="radio">
-                          <input type="radio" id="isAvailableTrue" name="AvailableCheck">
-                          True
-                        </label>
-                        <label class="radio">
-                          <input type="radio" name="AvailableCheck">
-                          False
-                        </label>
-                      </div>
-
-                      <div class="switch" style="display: flex;">
-                        <label style="padding-right: 10px;">Available</label>
-                        <input type="checkbox" id="isAvailableCheck" onclick="myFun()">                        
-                      </div>
-
-                    </th>
-                    <th>
-                      <!-- Control check disable -->
-                      <div class="control label" id="isDisable">                
-                        <label class="radio">
-                          <input type="radio" id="isDisableTrue" name="DisableCheck">
-                          True
-                        </label>
-                        <label class="radio">
-                          <input type="radio" name="DisableCheck" checked>
-                          False
-                        </label>
-                      </div>
-                    </th>
-                    <th>
-                      <!-- Control check Season -->
-                      <div class="control label" id="inSeason">                
-                        <label class="radio">
-                          <input type="radio" id="inSeasonTrue" name="SeasonCheck">
-                          Yes
-                        </label>
-                        <label class="radio">
-                          <input type="radio" name="SeasonCheck" checked>
-                          No
-                        </label>
-                      </div>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
+              </div>              
 
               <!-- Complement to select and show product image -->
               <div class="image-selector">
@@ -390,6 +353,29 @@
                   </div>                  
                 </th>
               </table>
+
+              <!-- complement to show the checkBoxs for: Available, Disable and InSeason -->
+              <fieldset>
+                <legend> Choose you features...</legend>
+
+                <!-- Control check Available -->
+                <div class="switch" style="display: flex;">
+                  <label style="padding-right: 10px;">Available</label>
+                  <input type="checkbox" id="isAvailableCheck" checked>                        
+                </div>
+
+                <!-- Control check disable -->
+                <div class="switch" style="display: flex;">
+                  <label style="padding-right: 10px;">Disable</label>
+                  <input type="checkbox" id="isDisableCheck">                        
+                </div>
+
+                <!-- Control check Season -->
+                <div class="switch" style="display: flex;">
+                  <label style="padding-right: 10px;">Season</label>
+                  <input type="checkbox" id="isSeasonCheck">                        
+                </div>
+              </fieldset>              
               
               <!-- Description Field -->
               <div class="field">
@@ -398,60 +384,6 @@
                   <textarea class="textarea" id="description" placeholder="Product Description..."></textarea>
                 </div>
               </div>
-
-              <!-- table to group the control checks -->
-              <table class="table" style="width: 100%;">
-                <thead class="table-header">
-                  <tr>
-                    <th> <span class="label">Is Available?</span> </th>
-                    <th> <span class="label">Is Disable?</span> </th>
-                    <th> <span class="label">Is Season?</span> </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>
-                      <!-- control check available -->
-                      <div class="control label" id="isAvailable">                
-                        <label class="radio">
-                          <input type="radio" id="isAvailableTrue" name="AvailableCheck" checked>
-                          True
-                        </label>
-                        <label class="radio">
-                          <input type="radio" name="AvailableCheck">
-                          False
-                        </label>
-                      </div>
-                    </th>
-                    <th>
-                      <!-- Control check disable -->
-                      <div class="control label" id="isDisable">                
-                        <label class="radio">
-                          <input type="radio" id="isDisableTrue" name="DisableCheck">
-                          True
-                        </label>
-                        <label class="radio">
-                          <input type="radio" name="DisableCheck" checked>
-                          False
-                        </label>
-                      </div>
-                    </th>
-                    <th>
-                      <!-- Control check Season -->
-                      <div class="control label" id="inSeason">                
-                        <label class="radio">
-                          <input type="radio" id="inSeasonTrue" name="SeasonCheck">
-                          Yes
-                        </label>
-                        <label class="radio">
-                          <input type="radio" name="SeasonCheck" checked>
-                          No
-                        </label>
-                      </div>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
 
               <!-- Complement to select and show product image -->
               <div class="image-selector">
