@@ -206,7 +206,7 @@
                       <!-- control check available -->
                       <div class="control label" id="isAvailable">                
                         <label class="radio">
-                          <input type="radio" id="isAvailableTrue" name="AvailableCheck" checked>
+                          <input type="radio" id="isAvailableTrue" name="AvailableCheck">
                           True
                         </label>
                         <label class="radio">
@@ -214,6 +214,12 @@
                           False
                         </label>
                       </div>
+
+                      <div class="switch" style="display: flex;">
+                        <label style="padding-right: 10px;">Available</label>
+                        <input type="checkbox" id="isAvailableCheck" onclick="myFun()">                        
+                      </div>
+
                     </th>
                     <th>
                       <!-- Control check disable -->
@@ -462,7 +468,7 @@
                     <div class="fileName">File name here</div>
                   </div>
                   <input id="default-btn" type="file" hidden accept="image/png, image/jpg">
-                  <button type="button" onclick="defaultBtnActive()" id="custom-btn">Choose a file</button>
+                  <button type="button" onclick="defaultBtnActive()" disabled="true" id="custom-btn">Choose a file</button>
                 </div>
               </div>
           </section>
