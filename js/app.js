@@ -2,15 +2,12 @@
 ---------------------------------------------------------------------------------------------------
 Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
-
-1. terminar el formulario de modificar, que permita modificar todos los campos execto la foto
 2. permitir que modificar permita cambiar la foto del producto
     a) seleccionar foto nueva
     b) cambiarla en el visor de imagenes 
     c) eliminar la foto anterior del storage the imagenes
 3. eliminar el borde de la imagen en el visor de añadir nuevo producto
 4. crear visor para mostrar el objeto completo con todos sus atributos detallados 
-
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -38,7 +35,7 @@ const wrapper = document.querySelector('.wrapper')
 // Const to form -> Insert new product
 //------------------------------------
 const productName = document.getElementById("productName");
-const origin = document.getElementById("origin");
+const productOrigin = document.getElementById("origin");
 const price = document.getElementById("price");
 const MOQ = document.getElementById("MOQ");
 const discount = document.getElementById("discount");
@@ -49,68 +46,10 @@ const description = document.getElementById("description");
 // Functions
 //--------------------------------------------------------------------------
 
-
-// function to control the event to edit product 
-function buttonEdit(idbutton){
-    showUpdateModal()
-
-    firebase.database().ref(`${endPointDB}/${idbutton}`).once('value')
-    .then((thisProduct) => {
-        const data = thisProduct.val()
-        
-        updateProductForm['productName'].value = data.productName;
-        updateProductForm['origin'].value = data.origin;
-        updateProductForm['price'].value = data.price; 
-        updateProductForm['MOQ'].value = data.MOQ;
-        updateProductForm['discount'].value = data.discount;
-        updateProductForm['category'].value = data.category; 
-        updateProductForm['salesUnit'].value = data.salesUnit; 
-        updateProductForm['description'].value = data.description;
-
-        updateProductForm['isAvailable'] = data.isAvailable;
-        updateProductForm['isDisable'] = data.isDisable;
-        updateProductForm['inSeason'] = data.inSeason;
-
-        imgUpdateForm.src = data.imageProduct;  
-
-        updateProductForm.addEventListener('submit', (e) => {
-            e.preventDefault()
-
-            const productName = updateProductForm['productName'].value
-            const origin = updateProductForm['origin'].value
-            const price = updateProductForm['price'].value
-            const MOQ = updateProductForm['MOQ'].value
-            const discount = updateProductForm['discount'].value
-            const category = updateProductForm['category'].value
-            const salesUnit = updateProductForm['salesUnit'].value
-            const description = updateProductForm['description'].value
-
-            const isAvailable = data.isAvailable
-            const isDisable = data.isDisable
-            const inSeason = data.inSeason
-
-            firebase.database().ref(`${endPointDB}/${idbutton}`).update({
-                productName: productName,
-                origin: origin,
-                price: price,
-                MOQ: MOQ,
-                discount: discount,
-                category: category,
-                salesUnit: salesUnit,
-                isAvailable: opposite(isAvailable),
-                isDisable: opposite(isDisable),
-                inSeason: opposite(inSeason),
-                description: description,
-            })              
-            showUpdateModal()
-        })
-    })
-}
-
 // function to clear all the form fields
 function clearInsertForm(){
     productName.value = "";
-    origin.value = "";
+    productOrigin.value = "";
     price.value = "";
     MOQ.value = "";
     discount.value = "";
@@ -118,29 +57,6 @@ function clearInsertForm(){
     salesUnit.value = "Select option";
     description.value = "";
     clearImage();
-}
-
-
-
-
-
-
-
-
-// function to get the informa
-function getCheckValue(formValue)
-{
-    switch(formValue){
-        case 0:
-            var resultCheck = document.getElementById("isAvailableCheck").checked;
-            return resultCheck
-        case 1:
-            var resultCheck = document.getElementById("isDisableCheck").checked;
-            return resultCheck
-        case 2:
-            var resultCheck = document.getElementById("isSeasonCheck").checked;
-            return resultCheck
-    }
 }
 
 // function to do Firebase Configuration
@@ -160,6 +76,7 @@ async function configuration(){
 
 // function to show the field to insert new product
 const showRegisterModal = () => {
+    clearInsertForm()
     modal.classList.toggle('is-active')
 }
 
@@ -280,6 +197,48 @@ function buttonDelete(idbutton){
     });
 }
 
+// function to control the event to edit product 
+function buttonEdit(idbutton){
+    showUpdateModal()
+    firebase.database().ref(`${endPointDB}/${idbutton}`).once('value')
+    .then((thisProduct) => {
+        const data = thisProduct.val()
+        
+        updateProductForm['productName'].value = data.productName;
+        updateProductForm['origin'].value = data.origin;
+        updateProductForm['price'].value = data.price; 
+        updateProductForm['MOQ'].value = data.MOQ;
+        updateProductForm['discount'].value = data.discount;
+        updateProductForm['category'].value = data.category; 
+        updateProductForm['salesUnit'].value = data.salesUnit; 
+        updateProductForm['description'].value = data.description;
+        updateProductForm['isAvailableCheck-update'].checked = data.isAvailable;
+        updateProductForm['isDisableCheck-update'].checked = data.isDisable;
+        updateProductForm['inSeasonCheck-update'].checked = data.inSeason;
+
+        imgUpdateForm.src = data.imageProduct;  
+
+        updateProductForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+
+            firebase.database().ref(`${endPointDB}/${idbutton}`).update({
+                productName: updateProductForm['productName'].value,
+                origin: updateProductForm['origin'].value,
+                price: updateProductForm['price'].value,
+                MOQ: updateProductForm['MOQ'].value,
+                discount: updateProductForm['discount'].value,
+                category: updateProductForm['category'].value,
+                salesUnit: updateProductForm['salesUnit'].value,
+                isAvailable: updateProductForm['isAvailableCheck-update'].checked,
+                isDisable: updateProductForm['isDisableCheck-update'].checked,
+                inSeason: updateProductForm['inSeasonCheck-update'].checked,
+                description: updateProductForm['description'].value,
+            })              
+            showUpdateModal()
+        })
+    })
+}
+
 // function to delete de imageProduct from the storage
 function deleteImageProduct(Uid){
     var productList = [];
@@ -382,22 +341,21 @@ function getAllDataFromDB(){
                 Uid: getPostId(postRef.toString()),
                 idProduct: uuid.v4(),
                 productName: productName.value,
-                origin: origin.value,
+                origin: productOrigin.value,
                 price: price.value,
                 MOQ: MOQ.value,
                 discount: discount.value,
                 category: category.value,
                 salesUnit: salesUnit.value,
-                isAvailable: getCheckValue(0),
-                isDisable: getCheckValue(1),
-                inSeason: getCheckValue(2),
+                isAvailable: document.getElementById("isAvailableCheck").checked,
+                isDisable: document.getElementById("isDisableCheck").checked,
+                inSeason: document.getElementById("inSeasonCheck").checked,
                 description: description.value,
                 imageProduct: String(imageProduct)
             });
 
             showRegisterModal(); // function to hide the register modal
             getAllDataFromDB(); // function to reload de table
-            clearInsertForm(); // clear the form after used it
         } 
         else{ swal("Warning!!", "Any of the required fields are empty!!"); }        
     })
