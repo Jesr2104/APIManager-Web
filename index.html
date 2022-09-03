@@ -46,7 +46,7 @@
         <div class="crud-container" >
             <div class="crud-header">
                 <h1><span class="material-icons md-18"> push_pin </span>Products list</h1>
-                <button class="button is-success" id="openRegisterModal"> 
+                <button class="button is-success" id="insertProduct"> 
                     <span class="material-icons md-24"> note_add </span>
                     <span> Add Product</span>
                 </button>
@@ -75,7 +75,7 @@
     </main>
 
     <!-- Card to insert new product -->
-    <div class="modal" id="modal">
+    <div class="modal" id="modal-insert-product">
         <div class="modal-background"></div>
         <div class="modal-card">
 
@@ -246,7 +246,7 @@
     </div>
 
     <!-- Card to Update product -->
-    <div class="modal" id="modal-update">
+    <div class="modal" id="modal-update-product">
         <div class="modal-background"></div>
         <div class="modal-card">
 
@@ -256,6 +256,7 @@
             <button class="delete" aria-label="close" id="closeUpdateModal"></button>
           </header>
           
+          <!-- section of the form to wrap all form -->
           <section class="modal-card-body">
             <!-- Content ... -->
             <form id="updateProduct-form">
@@ -410,6 +411,40 @@
             <button type="submit" class="button is-success">
                 <span class="material-icons md-24"> save </span>
                 <span> Update </span>
+            </button>
+          </form>
+          </footer>
+        </div>
+    </div>
+
+    <!-- Card to show full details fo the product -->
+    <div class="modal" id="modal-show-details">
+      <div class="modal-background"></div>
+        <div class="modal-card">
+
+          <!-- header of the Card to show details product -->
+          <header class="modal-card-head">
+            <p class="modal-card-title">Show details</p>
+          </header>
+
+          <section>
+            <form id="showDetails-form">
+            <h1 style="color: white;">Show details of product</h1>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+              Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+              when an unknown printer took a galley of type and scrambled it to make a type 
+              specimen book. It has survived not only five centuries, but also the leap into 
+              electronic typesetting, remaining essentially unchanged. It was popularised 
+              in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+              and more recently with desktop publishing software like Aldus PageMaker including
+              versions of Lorem Ipsum.
+            </p>
+          </section>
+
+          <footer class="modal-card-foot">
+            <button type="submit" class="button is-success">
+                <span> Close </span>
             </button>
           </form>
           </footer>

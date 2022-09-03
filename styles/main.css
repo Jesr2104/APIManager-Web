@@ -6,6 +6,7 @@
     --dark: #001233;
     --white: #fff;
     --yellow: #ffb703;
+    --mainColor1: #9658fe;
 }
 
 /**************************************************/
@@ -60,7 +61,6 @@ body
 /**************************************************/
 /* Main                                           */
 /**************************************************/
-
 .main-content
 {
     /* altura del contenido principal*/
@@ -158,7 +158,7 @@ body
     width: 100%;
     border:3px dashed #c2cdda;
     border-radius: 10px;
-    background: #fff;
+    background: var(--white);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -189,8 +189,8 @@ body
 
 .wrapper .icon
 {
-    font-size: 100px;
-    color: #9658fe;
+    font-size: 200px;
+    color: var(--mainColor1);
 }
 
 .wrapper .text
@@ -218,7 +218,7 @@ body
 
 .wrapper #cancel-btn:hover
 {
-    color: #9658fe;
+    color: var(--mainColor1);
 }
 
 .wrapper .fileName
@@ -226,7 +226,7 @@ body
     position: absolute;
     bottom: 0px;
     width: 100%;
-    color: #fff;
+    color: var(--white);
     padding: 2px 0;
     font-size: 10px;
     display: none;
@@ -246,13 +246,31 @@ body
     display: block;
     border: none;
     border-radius: 10px;
-    color: #fff;
+    color: var(--white);
     font-size: 18px;
     font-weight: 500;
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
-    background: #9658fe;
+    background: var(--mainColor1);
+}
+
+/**************************************************/
+/* Modal - Show details                           */
+/**************************************************/
+.modal-insert-product
+{
+    display: flex;
+}
+
+.modal-update-product
+{
+    display: flex;
+}
+
+.modal-show-details
+{
+    display: flex;
 }
   
 /**************************************************/

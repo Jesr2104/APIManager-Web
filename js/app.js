@@ -16,24 +16,46 @@ Lista de tareas por realizar
 const endPointDB = 'productListDB'
 const endPointStore = 'ImageStore'
 
-const openModal = document.getElementById('openRegisterModal')
-const modal = document.getElementById('modal')
-const updateModal = document.getElementById('modal-update')
-const closeModal = document.getElementById('closeRegisterModal')
-const closeUpdateModal = document.getElementById('closeUpdateModal')
-const newProductForm = document.getElementById('newProduct-form')
+// Modals
+//==========================================================================
+const modalInsertProduct = document.getElementById('modal-insert-product')
+const modalUpdateProduct = document.getElementById('modal-update-product')
+const modalShowDetails = document.getElementById('modal-show-details')
+//==========================================================================
+
+// button to Insert New Product
+const insertProduct_btn = document.getElementById('insertProduct')
+
+// close the modals Buttons
+const closeModalInsertProduct_btn = document.getElementById('closeRegisterModal')
+const closeModalUpdateProduct_btn = document.getElementById('closeUpdateModal')
+
+// const to the form (newProduc - UpdateProduct - ShowDetails)
+const insertProductForm = document.getElementById('newProduct-form')
 const updateProductForm = document.getElementById('updateProduct-form')
-const defaultBtn = document.getElementById('default-btn')
-const img = document.getElementById('Image-load')
-const imgUpdateForm = document.getElementById('Image-load-udate-form')
-const cancelBtn = document.getElementById('cancel-btn')
+const showDetailsForm = document.getElementById('showDetails-form')
+
+// const images on forms
+const visor_InsertForm = document.getElementById('Image-load') // Insert Product Form
+const visor_UpdateForm = document.getElementById('Image-load-udate-form') // Update Product Form
+
+//const table to load the data
 const productTable = document.getElementById('products-table')
 
+// file selector default button
+const defaultBtn = document.getElementById('default-btn')
+
+// const to de button to clear image visor
+const clearVisor_btn = document.getElementById('cancel-btn')
+
+// refence of the filename 
 const fileName = document.querySelector('.fileName')
+
+// reference to the image visor
 const wrapper = document.querySelector('.wrapper')
 
 // Const to form -> Insert new product
-//------------------------------------
+//--------------------------------------------------------------------------
 const productName = document.getElementById("productName");
 const productOrigin = document.getElementById("origin");
 const price = document.getElementById("price");
@@ -45,6 +67,18 @@ const description = document.getElementById("description");
 
 // Functions
 //--------------------------------------------------------------------------
+
+// funcion to show and close de Insert Product
+function showModal_InsertProduct(){ clearInsertForm(); modalInsertProduct.classList.add('modal-insert-product'); }
+function closeModal_InsertProduct(){ modalInsertProduct.classList.remove('modal-insert-product'); }
+
+// funcion to show and close de Update Modal
+function showModal_UpdateProduct(){ modalUpdateProduct.classList.add('modal-update-product') }
+function closeModal_UpdateProduct(){ modalUpdateProduct.classList.remove('modal-update-product') }
+
+// funcion to show and close de Show Details Modal
+function showModal_showDetails(){ modalShowDetails.classList.add('modal-show-details'); }
+function closeModal_showDetails(){ modalShowDetails.classList.remove('modal-show-details'); }
 
 // function to clear all the form fields
 function clearInsertForm(){
@@ -74,17 +108,6 @@ async function configuration(){
     firebase.initializeApp(firebaseConfig);
 }
 
-// function to show the field to insert new product
-const showRegisterModal = () => {
-    clearInsertForm()
-    modal.classList.toggle('is-active')
-}
-
-// function to show the field to update product
-const showUpdateModal = () => {
-    updateModal.classList.toggle('is-active')
-}
-
 // function to load the image on the visor
 function loadImageOnVisor(){
     const fileImg = this.files[0];
@@ -92,7 +115,7 @@ function loadImageOnVisor(){
         const reader = new FileReader();
         reader.onload = function(){
             const result = reader.result;
-            img.src = result;
+            visor_InsertForm.src = result;
             wrapper.classList.add("active");
         }
         reader.readAsDataURL(fileImg)
@@ -110,7 +133,7 @@ function defaultBtnActive(){
 
 // function to clear the image of visor
 function clearImage(){
-    img.src = " "
+    visor_InsertForm.src = " "
     wrapper.classList.remove("active")
 }
 
@@ -150,7 +173,7 @@ function loadDataOnTable(productList){
         productTable.innerHTML += `
             <tr>
                 <th>${cont}</th>
-                <th><a href="url">${products.productName}</a></th>
+                <th style="font-style: italic;"><a class="details-product" id="${products.Uid}">${products.productName}</a></th>
                 <th>${products.origin}</th>
                 <th>${products.price}</th>
                 <th>${products.discount}</th>
@@ -164,6 +187,11 @@ function loadDataOnTable(productList){
             </tr>`        
         cont++
 
+        // showLink to see the delails of the product
+        document.querySelectorAll('.details-product').forEach((link) => {
+            link.addEventListener('click', (e) => {linkShowDetails(e.currentTarget.id)})
+        })
+
         // setup for delete buttons
         document.querySelectorAll('.is-danger').forEach((button) => {
             button.addEventListener('click', (e) => { buttonDelete(e.currentTarget.id) })
@@ -173,6 +201,21 @@ function loadDataOnTable(productList){
             button.addEventListener('click', (e) => { buttonEdit(e.currentTarget.id) })
         })
     })
+}
+
+// function to handle the events of the link show product details
+function linkShowDetails(idLink){
+    showModal_showDetails()
+
+    /*
+        Body of the function here
+        to show the full data product 
+    */
+
+    showDetailsForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+        closeModal_showDetails()
+    }) 
 }
 
 // function to control the event to delete product
@@ -199,7 +242,7 @@ function buttonDelete(idbutton){
 
 // function to control the event to edit product 
 function buttonEdit(idbutton){
-    showUpdateModal()
+    showModal_UpdateProduct()
     firebase.database().ref(`${endPointDB}/${idbutton}`).once('value')
     .then((thisProduct) => {
         const data = thisProduct.val()
@@ -216,7 +259,7 @@ function buttonEdit(idbutton){
         updateProductForm['isDisableCheck-update'].checked = data.isDisable;
         updateProductForm['inSeasonCheck-update'].checked = data.inSeason;
 
-        imgUpdateForm.src = data.imageProduct;  
+        visor_UpdateForm.src = data.imageProduct;  
 
         updateProductForm.addEventListener('submit', (e) => {
             e.preventDefault()
@@ -234,7 +277,13 @@ function buttonEdit(idbutton){
                 inSeason: updateProductForm['inSeasonCheck-update'].checked,
                 description: updateProductForm['description'].value,
             })              
-            showUpdateModal()
+            closeModal_UpdateProduct()
+
+            swal({
+                title: "Update completed!",
+                icon: "success",
+                button: "Done!",
+              });
         })
     })
 }
@@ -313,14 +362,18 @@ function getAllDataFromDB(){
 
 // Events control -------------------->>>>
 //--------------------------------------------------------------------------
-    openModal.addEventListener('click', showRegisterModal)
-    closeModal.addEventListener('click', showRegisterModal)
-    closeUpdateModal.addEventListener('click', showUpdateModal)
+    // event to the button insert product
+    insertProduct_btn.addEventListener('click', showModal_InsertProduct)
+
+    // button to close form
+    closeModalInsertProduct_btn.addEventListener('click', closeModal_InsertProduct)
+    closeModalUpdateProduct_btn.addEventListener('click', closeModal_UpdateProduct)
+
     defaultBtn.addEventListener('change', loadImageOnVisor)
-    cancelBtn.addEventListener('click', clearImage)
+    clearVisor_btn.addEventListener('click', clearImage)
 
     // button to insert new product
-    newProductForm.addEventListener('submit', async (e) => {
+    insertProductForm.addEventListener('submit', async (e) => {
         e.preventDefault()
         
         // refence of the data base
@@ -332,7 +385,7 @@ function getAllDataFromDB(){
         var imageProduct = await upLoadImaProduct(getFile());        
 
         // check the mandatory fields -> Product name, origin, price, discount, category, salesUnit, productImage 
-        if(Boolean(productName.value) && Boolean(origin.value) &&
+        if(Boolean(productName.value) && Boolean(productOrigin.value) &&
             Boolean(price.value) && Boolean(discount.value) &&
             !(category.value === "Select category") &&
             !(salesUnit.value === "Select option") && imageProduct != null
@@ -354,10 +407,10 @@ function getAllDataFromDB(){
                 imageProduct: String(imageProduct)
             });
 
-            showRegisterModal(); // function to hide the register modal
+            closeModal_InsertProduct(); // function to hide the register modal
             getAllDataFromDB(); // function to reload de table
         } 
-        else{ swal("Warning!!", "Any of the required fields are empty!!"); }        
+        else{ swal("Warning!!", "Any of the required fields are empty!!"); }
     })
 
     // Functions main call  -------------------->>>>
