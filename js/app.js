@@ -207,14 +207,29 @@ function loadDataOnTable(productList){
 function linkShowDetails(idLink){
     showModal_showDetails()
 
-    /*
-        Body of the function here
-        to show the full data product 
-    */
+    firebase.database().ref(`${endPointDB}/${idLink}`).once('value')
+    .then((thisProduct) => {
+        const data = thisProduct.val()
 
-    showDetailsForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-        closeModal_showDetails()
+        document.getElementById("productName-fromDetails").innerHTML = data.productName
+        document.getElementById("caregory-fromDetails").innerHTML = data.category
+        document.getElementById("origin-fromDetails").innerHTML = data.origin
+        document.getElementById("price-fromDetails").innerHTML = data.price
+        document.getElementById("Discount-fromDetails").innerHTML = data.discount
+        document.getElementById("MOQ-fromDetails").innerHTML = data.MOQ
+        document.getElementById("salesUnit-fromDetails").innerHTML = data.salesUnit
+        document.getElementById("Description-fromDetails").innerHTML = data.description
+        document.getElementById("inSeason-fromDetails").innerHTML = data.inSeason
+        document.getElementById("isAvailable-fromDetails").innerHTML = data.isAvailable
+        document.getElementById("isDisable-fromDetails").innerHTML = data.isDisable
+        document.getElementById("imageProduct-fromDetails").src = data.imageProduct
+        document.getElementById("idProduct-fromDetails").innerHTML = data.idProduct
+        document.getElementById("Uid-fromDetails").innerHTML = data.Uid
+
+        showDetailsForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            closeModal_showDetails()
+        })
     }) 
 }
 
@@ -246,6 +261,8 @@ function buttonEdit(idbutton){
     firebase.database().ref(`${endPointDB}/${idbutton}`).once('value')
     .then((thisProduct) => {
         const data = thisProduct.val()
+
+        console.log(updateProductForm['Jesr2104'])
         
         updateProductForm['productName'].value = data.productName;
         updateProductForm['origin'].value = data.origin;
