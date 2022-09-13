@@ -441,7 +441,7 @@
                     <img id="imageProduct-fromDetails" src="" width="160" height="200">
                   </td>
                   <td>
-                    <!-- primer bloque de datos -->
+                    <!-- first code block ==> name, category, origin -->
                     <div>
                       <label class="label-details">Product Name:</label>
                       <p></p>
@@ -451,6 +451,7 @@
                     <div>
                       <label class="label-details">Category:</label>
                       <p></p>
+                      <img id="iconCategory-fromDetails" src=" " width="15px" height="15px">
                       <span id="caregory-fromDetails">result</span>
                     </div>
 
@@ -463,15 +464,14 @@
                 </tr>
               </table>
 
-              <!-- segundo bloque de datos -->
+              <!-- second code block ==> description, price, discount, MOQ -->
               <div>
                 <label class="label-details">Description:</label>
                 <p></p>
                 <span id="Description-fromDetails">result</span>
               </div> 
               
-              <hr>
-              <div>
+              <div style="margin-top: 12px;">
                 <label class="label-details">Price:</label>
                 <span id="price-fromDetails">result</span>
               </div>
@@ -484,66 +484,47 @@
               <div>
                 <label class="label-details">MOQ:</label>
                 <span id="MOQ-fromDetails">result</span>
-              </div>
+              </div>                          
 
-              <div>
-                <label class="label-details">Sales Unit:</label>
-                <span id="salesUnit-fromDetails">result</span>
-              </div>
-
-                          
-
-              <!-- tercer bloque de datos -->
-              <hr>
-              
-
-              
-
-              
-
+              <!-- third code block ==> season, available, disable -->
               <table id="tablechecks">
                 <tr>
                   <td>
-
-                    <div>
-                      <label class="label-details">Season:</label>
-                      <p></p>
+                    <div style="margin-right: 15px;">
+                      <label class="label-details">In Season:</label>
                       <span id="inSeason-fromDetails">result</span>
                     </div>
-                    
                   </td>
                   <td>
-
-                    <div>
-                      <label class="label-details">Available:</label>
-                      <p></p>
+                    <div style="margin-right: 15px;">
+                      <label class="label-details">Is Available:</label>
                       <span id="isAvailable-fromDetails">result</span>
                     </div>
-                    
                   </td>
                   <td>
-
-                    <div>
-                      <label class="label-details">Disable:</label>
-                      <p></p>
+                    <div style="margin-right: 15px;">
+                      <label class="label-details">Is Disable:</label>
                       <span id="isDisable-fromDetails">result</span>
                     </div>
-                    
                   </td>
                 </tr>
               </table>
 
-
-              <!-- cuarto bloque de datos -->
-              <hr>
-              <div>
-                <label class="label-details">IDProduct:</label>
-                <span id="idProduct-fromDetails">result</span>
-              </div>
-
-              <div>
-                <label class="label-details">UID:</label>
-                <span id="Uid-fromDetails">result</span>
+              <!-- Frame with the Ids information -->
+              <div class="frame-fromDetails">
+                <div>
+                  <span>Special identifiers</span>
+                </div>
+                <hr class="lineOnFrame-fromDetails">
+                <div>
+                  <label class="label-details">IDProduct:</label>
+                  <span id="idProduct-fromDetails">result</span>
+                </div>
+  
+                <div>
+                  <label class="label-details">UID:</label>
+                  <span id="Uid-fromDetails">result</span>
+                </div>
               </div>
               
           </section>

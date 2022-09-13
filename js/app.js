@@ -7,7 +7,13 @@ Lista de tareas por realizar
     b) cambiarla en el visor de imagenes 
     c) eliminar la foto anterior del storage the imagenes
 3. eliminar el borde de la imagen en el visor de añadir nuevo producto
-4. crear visor para mostrar el objeto completo con todos sus atributos detallados 
+4. restringir el numero de caracteres mostrados en las columnas de las tabla
+    .ellipsis {
+        max-width: 40px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+}
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -15,6 +21,8 @@ Lista de tareas por realizar
 //--------------------------------------------------------------------------
 const endPointDB = 'productListDB'
 const endPointStore = 'ImageStore'
+const iconSize = '15px'
+const currency = '£'
 
 // Modals
 //==========================================================================
@@ -91,6 +99,24 @@ function clearInsertForm(){
     salesUnit.value = "Select option";
     description.value = "";
     clearImage();
+}
+
+// function to clear all the form after to used
+function clearformFromDetails(){
+    document.getElementById("productName-fromDetails").innerHTML = ""
+    document.getElementById("caregory-fromDetails").innerHTML = ""
+    document.getElementById("iconCategory-fromDetails").src = ""
+    document.getElementById("origin-fromDetails").innerHTML = ""
+    document.getElementById("price-fromDetails").innerHTML = ""
+    document.getElementById("Discount-fromDetails").innerHTML = ""
+    document.getElementById("MOQ-fromDetails").innerHTML = ""
+    document.getElementById("Description-fromDetails").innerHTML = ""
+    document.getElementById("inSeason-fromDetails").innerHTML = ""
+    document.getElementById("isAvailable-fromDetails").innerHTML = ""
+    document.getElementById("isDisable-fromDetails").innerHTML = ""
+    document.getElementById("imageProduct-fromDetails").src = ""
+    document.getElementById("idProduct-fromDetails").innerHTML = ""
+    document.getElementById("Uid-fromDetails").innerHTML = ""
 }
 
 // function to do Firebase Configuration
@@ -175,10 +201,13 @@ function loadDataOnTable(productList){
                 <th>${cont}</th>
                 <th style="font-style: italic;"><a class="details-product" id="${products.Uid}">${products.productName}</a></th>
                 <th>${products.origin}</th>
-                <th>${products.price}</th>
-                <th>${products.discount}</th>
+                <th>${calculateDiscount(products.discount, products.price)}</th>
+                <th>${products.discount} %</th>
                 <th>${products.MOQ}</th>
-                <th>${getCategory(products.category)}</th>
+                <th> 
+                    <img src="${getCategoryIcon(products.category)}" width="${iconSize}" height="${iconSize}">
+                    <span> ${getCategory(products.category)}</span>
+                </th>
                 <th>${products.salesUnit}</th>
                 <th>
                     <button class="button is-warning" id="${products.Uid}"><span class="material-icons md-24"> edit </span></button>
@@ -212,13 +241,13 @@ function linkShowDetails(idLink){
         const data = thisProduct.val()
 
         document.getElementById("productName-fromDetails").innerHTML = data.productName
-        document.getElementById("caregory-fromDetails").innerHTML = data.category
+        document.getElementById("caregory-fromDetails").innerHTML = getCategory(data.category)
+        document.getElementById("iconCategory-fromDetails").src = getCategoryIcon(data.category)
         document.getElementById("origin-fromDetails").innerHTML = data.origin
-        document.getElementById("price-fromDetails").innerHTML = data.price
-        document.getElementById("Discount-fromDetails").innerHTML = data.discount
-        document.getElementById("MOQ-fromDetails").innerHTML = data.MOQ
-        document.getElementById("salesUnit-fromDetails").innerHTML = data.salesUnit
-        document.getElementById("Description-fromDetails").innerHTML = data.description
+        document.getElementById("price-fromDetails").innerHTML =  calculateDiscount(data.discount, data.price)
+        document.getElementById("Discount-fromDetails").innerHTML = data.discount + '%'
+        document.getElementById("MOQ-fromDetails").innerHTML = data.MOQ + ' ' + data.salesUnit
+        document.getElementById("Description-fromDetails").innerHTML = checkDescriptionEmpty(data.description)
         document.getElementById("inSeason-fromDetails").innerHTML = data.inSeason
         document.getElementById("isAvailable-fromDetails").innerHTML = data.isAvailable
         document.getElementById("isDisable-fromDetails").innerHTML = data.isDisable
@@ -229,8 +258,20 @@ function linkShowDetails(idLink){
         showDetailsForm.addEventListener('submit', (e) => {
             e.preventDefault()
             closeModal_showDetails()
+            clearformFromDetails()
         })
     }) 
+}
+
+// check is the description is empty to put a message to the user
+function checkDescriptionEmpty(description){
+    if(description.length == 0){
+        // is empty 
+        return "Description is empty..."
+    } else {
+        // it's not empty
+        return description
+    }
 }
 
 // function to control the event to delete product
@@ -356,6 +397,24 @@ function getCategory(categoryNumber){
     }
 }
 
+// function to get the icon of the category
+function getCategoryIcon(categoryNumber){
+    switch(categoryNumber) {
+        case '0':
+          return "https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2Fproduct-design.png?alt=media&token=4dec3dda-a48b-48bf-aadf-d26f0bbba830";
+        case '1':
+            return "https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2Fapple.png?alt=media&token=87769a0d-a90d-4496-94ce-f69015680e62";     
+        case '2':
+            return "https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2Fbroccoli.png?alt=media&token=9b1580c1-f40e-47b1-bb27-74b75c71777d";
+        case '3':
+            return "https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2Fherbs.png?alt=media&token=2c8f2ddc-d360-4c20-8913-933aa5873071";
+        case '4':
+            return "https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2Fwalnut.png?alt=media&token=4c9cca32-84dc-4745-ac97-4e7a2029be37";
+        case '5':
+            return "https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2Fmushroom.png?alt=media&token=e0890589-9b3c-4830-8cf1-5129e96cdb99";
+    }
+}
+
 // function to get all the products from the database a load it on the table
 function getAllDataFromDB(){
     const dbRef = firebase.database().ref()
@@ -375,6 +434,16 @@ function getAllDataFromDB(){
     .catch ((error) => {
         console.error(error);
     })    
+}
+
+// function to calculate de discount if the product have any of them
+function calculateDiscount(discount, price){
+    var result = price - (price * (discount/100))
+    if(discount != '0'){
+        return `${result.toFixed(2)} ${currency} - <span style="color:#bdbdbd; text-decoration: line-through;"> ${price} ${currency}</span>`
+    } else {
+        return `${price} ${currency}`
+    }
 }
 
 // Events control -------------------->>>>
