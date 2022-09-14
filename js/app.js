@@ -2,18 +2,19 @@
 ---------------------------------------------------------------------------------------------------
 Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
-2. permitir que modificar permita cambiar la foto del producto
+2. permitir que modificar permita cambiar la foto del producto.
     a) seleccionar foto nueva
     b) cambiarla en el visor de imagenes 
     c) eliminar la foto anterior del storage the imagenes
-3. eliminar el borde de la imagen en el visor de añadir nuevo producto
-4. restringir el numero de caracteres mostrados en las columnas de las tabla
+3. eliminar el borde de la imagen en el visor de añadir nuevo producto.
+4. restringir el numero de caracteres mostrados en las columnas de las tabla.
     .ellipsis {
         max-width: 40px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
 }
+5. login de la base as a administrator of the database.
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -299,12 +300,11 @@ function buttonDelete(idbutton){
 // function to control the event to edit product 
 function buttonEdit(idbutton){
     showModal_UpdateProduct()
+
     firebase.database().ref(`${endPointDB}/${idbutton}`).once('value')
     .then((thisProduct) => {
         const data = thisProduct.val()
 
-        console.log(updateProductForm['Jesr2104'])
-        
         updateProductForm['productName'].value = data.productName;
         updateProductForm['origin'].value = data.origin;
         updateProductForm['price'].value = data.price; 
@@ -316,34 +316,40 @@ function buttonEdit(idbutton){
         updateProductForm['isAvailableCheck-update'].checked = data.isAvailable;
         updateProductForm['isDisableCheck-update'].checked = data.isDisable;
         updateProductForm['inSeasonCheck-update'].checked = data.inSeason;
-
         visor_UpdateForm.src = data.imageProduct;  
 
-        updateProductForm.addEventListener('submit', (e) => {
-            e.preventDefault()
-
-            firebase.database().ref(`${endPointDB}/${idbutton}`).update({
-                productName: updateProductForm['productName'].value,
-                origin: updateProductForm['origin'].value,
-                price: updateProductForm['price'].value,
-                MOQ: updateProductForm['MOQ'].value,
-                discount: updateProductForm['discount'].value,
-                category: updateProductForm['category'].value,
-                salesUnit: updateProductForm['salesUnit'].value,
-                isAvailable: updateProductForm['isAvailableCheck-update'].checked,
-                isDisable: updateProductForm['isDisableCheck-update'].checked,
-                inSeason: updateProductForm['inSeasonCheck-update'].checked,
-                description: updateProductForm['description'].value,
-            })              
-            closeModal_UpdateProduct()
-
-            swal({
-                title: "Update completed!",
-                icon: "success",
-                button: "Done!",
-              });
-        })
+        // event to update the information on the server
+        updateProductForm.addEventListener('submit', updateInfoOnServer)
+        updateProductForm.myParam = idbutton;
     })
+}
+
+// function to update de information on the firebase
+function updateInfoOnServer(idbutton){
+    // deprecate function this will be need update
+    event.preventDefault()
+
+    firebase.database().ref(`${endPointDB}/${idbutton.currentTarget.myParam}`).update({
+        productName: updateProductForm['productName'].value,
+        origin: updateProductForm['origin'].value,
+        price: updateProductForm['price'].value,
+        MOQ: updateProductForm['MOQ'].value,
+        discount: updateProductForm['discount'].value,
+        category: updateProductForm['category'].value,
+        salesUnit: updateProductForm['salesUnit'].value,
+        isAvailable: updateProductForm['isAvailableCheck-update'].checked,
+        isDisable: updateProductForm['isDisableCheck-update'].checked,
+        inSeason: updateProductForm['inSeasonCheck-update'].checked,
+        description: updateProductForm['description'].value,
+    });              
+    closeModal_UpdateProduct();
+    getAllDataFromDB(); // function to reload de table
+
+    swal({
+        title: "Update completed!",
+        icon: "success",
+        button: "Done!",
+    });
 }
 
 // function to delete de imageProduct from the storage
