@@ -6,7 +6,6 @@ Lista de tareas por realizar
     a) seleccionar foto nueva
     b) cambiarla en el visor de imagenes 
     c) eliminar la foto anterior del storage the imagenes
-3. eliminar el borde de la imagen en el visor de añadir nuevo producto.
 4. restringir el numero de caracteres mostrados en las columnas de las tabla.
     .ellipsis {
         max-width: 40px;
@@ -89,6 +88,10 @@ function closeModal_UpdateProduct(){ modalUpdateProduct.classList.remove('modal-
 function showModal_showDetails(){ modalShowDetails.classList.add('modal-show-details'); }
 function closeModal_showDetails(){ modalShowDetails.classList.remove('modal-show-details'); }
 
+// function to show the hide the image if it's not ready
+function showImageVisorInsertProduct(){ visor_InsertForm.classList.remove('hide-image');}
+function hideImageVisorInsertProduct(){ visor_InsertForm.classList.add('hide-image');}
+
 // function to clear all the form fields
 function clearInsertForm(){
     productName.value = "";
@@ -150,6 +153,7 @@ function loadImageOnVisor(){
     if(this.value){
         let valueStore = this.value;
         fileName.textContent = valueStore
+        showImageVisorInsertProduct()
     }
 }
 
@@ -453,16 +457,22 @@ function calculateDiscount(discount, price){
 }
 
 // Events control -------------------->>>>
-//--------------------------------------------------------------------------
+//-------------------------------------------------------------------------
     // event to the button insert product
-    insertProduct_btn.addEventListener('click', showModal_InsertProduct)
+    insertProduct_btn.addEventListener('click', (e) => {
+        showModal_InsertProduct(); hideImageVisorInsertProduct();
+    })
+
+    clearVisor_btn.addEventListener('click', (e) => {
+        clearImage(); hideImageVisorInsertProduct();
+    })
+
+    // when the button select a new picture the event is caught like a change
+    defaultBtn.addEventListener('change', loadImageOnVisor)
 
     // button to close form
     closeModalInsertProduct_btn.addEventListener('click', closeModal_InsertProduct)
     closeModalUpdateProduct_btn.addEventListener('click', closeModal_UpdateProduct)
-
-    defaultBtn.addEventListener('change', loadImageOnVisor)
-    clearVisor_btn.addEventListener('click', clearImage)
 
     // button to insert new product
     insertProductForm.addEventListener('submit', async (e) => {
