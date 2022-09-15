@@ -2,10 +2,6 @@
 ---------------------------------------------------------------------------------------------------
 Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
-2. permitir que modificar permita cambiar la foto del producto.
-    a) seleccionar foto nueva
-    b) cambiarla en el visor de imagenes 
-    c) eliminar la foto anterior del storage the imagenes
 5. login de la base as a administrator of the database.
 3. Colocar el usuario administrado que esta ligueado en el top
 4. agregar evento de load imagen al visor de la imagen tambien
@@ -21,6 +17,7 @@ const endPointStore = 'ImageStore'
 const iconSize = '15px'
 const currency = '£'
 
+// check when the user change the image on the form
 var imagenIsUpdate = false
 
 // Modals
@@ -136,6 +133,7 @@ function clearformFormUpdate(){
     updateProductForm['isDisableCheck-update'].checked = "";
     updateProductForm['inSeasonCheck-update'].checked = "";
     visor_UpdateForm.src = " ";
+    imagenIsUpdate = false
     clearImage();
 }
 
@@ -176,9 +174,7 @@ function loadImageOnVisor(){
 }
 
 // function to call the input file button
-function defaultBtnActive(){
-    defaultBtn.click();
-}
+function defaultBtnActive(){ defaultBtn.click() }
 
 // function to clear the image of visor
 function clearImage(){
@@ -364,14 +360,15 @@ async function updateInfoOnServer(values){
         // this mind the imagen is update also
         if(imagenIsUpdate){
 
+            // delete the old image on the server to replace for the new one
+            deleteImageProduct(idProduct)
+
             // load image of the product
             var imageProduct = await upLoadImaProduct(getFile());
             resultImage = String(imageProduct)
         }
         // the image is the same as before
-        else {
-            resultImage = updateProductForm['Image-load-udate-form'].src           
-        }
+        else { resultImage = updateProductForm['Image-load-udate-form'].src }
 
         firebase.database().ref(`${endPointDB}/${idProduct}`).update({
             productName: updateProductForm['productName'].value,
@@ -422,9 +419,7 @@ function deleteImageProduct(Uid){
 }
 
 // function to getPostId
-function getPostId(fullPath){
-    return fullPath.split("/")[4]
-}
+function getPostId(fullPath){ return fullPath.split("/")[4] }
 
 // function to get the file
 function getFile(){
