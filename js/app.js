@@ -6,13 +6,6 @@ Lista de tareas por realizar
     a) seleccionar foto nueva
     b) cambiarla en el visor de imagenes 
     c) eliminar la foto anterior del storage the imagenes
-4. restringir el numero de caracteres mostrados en las columnas de las tabla.
-    .ellipsis {
-        max-width: 40px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-}
 5. login de la base as a administrator of the database.
 ---------------------------------------------------------------------------------------------------
 **/
@@ -204,8 +197,8 @@ function loadDataOnTable(productList){
         productTable.innerHTML += `
             <tr>
                 <th>${cont}</th>
-                <th style="font-style: italic;"><a class="details-product" id="${products.Uid}">${products.productName}</a></th>
-                <th>${products.origin}</th>
+                <th class="maxSizeText" style="font-style: italic;"><a class="details-product" id="${products.Uid}">${products.productName}</a></th>
+                <th class="maxSizeText" >${products.origin}</th>
                 <th>${calculateDiscount(products.discount, products.price)}</th>
                 <th>${products.discount} %</th>
                 <th>${products.MOQ}</th>

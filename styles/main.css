@@ -356,3 +356,13 @@ padding: 10px;
     margin-top: 5px; 
     margin-bottom: 5px;
 }
+
+/*table*/
+
+.maxSizeText
+{
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
