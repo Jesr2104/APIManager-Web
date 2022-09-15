@@ -357,8 +357,9 @@ padding: 10px;
     margin-bottom: 5px;
 }
 
-/*table*/
-
+/**************************************************/
+/* property for over text on the table            */
+/**************************************************/
 .maxSizeText
 {
     max-width: 200px;

@@ -401,7 +401,7 @@
                     <div class="fileName">File name here</div>
                   </div>
                   <input id="default-btn" type="file" hidden accept="image/png, image/jpg">
-                  <button type="button" onclick="defaultBtnActive()" disabled="true" id="custom-btn">Choose a file</button>
+                  <button type="button" onclick="defaultBtnActive()" id="custom-btn">Choose a file</button>
                 </div>
               </div>
           </section>
@@ -423,17 +423,15 @@
         <div class="modal-card">
 
           <!-- header of the Card to show details product -->
-          <header class="modal-card-head"></header>
+          <header class="modal-card-head">
+            <p class="modal-card-title">Product Details</p>
+          </header>
 
           <!-- section of the form to wrap all form -->
           <section class="modal-card-body">
 
             <!-- Content ... -->
             <form id="showDetails-form">
-
-              <!-- Title -->
-              <h1 id="title-detail-form">Product Details</h1>
-              <br>
 
               <table style="width: 100%;">
                 <tr>

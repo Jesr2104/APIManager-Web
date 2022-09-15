@@ -7,6 +7,10 @@ Lista de tareas por realizar
     b) cambiarla en el visor de imagenes 
     c) eliminar la foto anterior del storage the imagenes
 5. login de la base as a administrator of the database.
+3. Colocar el usuario administrado que esta ligueado en el top
+4. agregar evento de load imagen al visor de la imagen tambien
+8. fallo al seleccionar una imagen en update y abrir el formulario de insertar nuevo producto 
+   sigue la imagen seleccionada
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -16,6 +20,8 @@ const endPointDB = 'productListDB'
 const endPointStore = 'ImageStore'
 const iconSize = '15px'
 const currency = '£'
+
+var imagenIsUpdate = false
 
 // Modals
 //==========================================================================
@@ -70,16 +76,16 @@ const description = document.getElementById("description");
 //--------------------------------------------------------------------------
 
 // funcion to show and close de Insert Product
-function showModal_InsertProduct(){ clearInsertForm(); modalInsertProduct.classList.add('modal-insert-product'); }
-function closeModal_InsertProduct(){ modalInsertProduct.classList.remove('modal-insert-product'); }
+function showModal_InsertProduct(){ modalInsertProduct.classList.add('modal-insert-product'); }
+function closeModal_InsertProduct(){ clearInsertForm(); modalInsertProduct.classList.remove('modal-insert-product'); }
 
 // funcion to show and close de Update Modal
 function showModal_UpdateProduct(){ modalUpdateProduct.classList.add('modal-update-product') }
-function closeModal_UpdateProduct(){ modalUpdateProduct.classList.remove('modal-update-product') }
+function closeModal_UpdateProduct(){ clearformFormUpdate(); modalUpdateProduct.classList.remove('modal-update-product') }
 
 // funcion to show and close de Show Details Modal
 function showModal_showDetails(){ modalShowDetails.classList.add('modal-show-details'); }
-function closeModal_showDetails(){ modalShowDetails.classList.remove('modal-show-details'); }
+function closeModal_showDetails(){ clearformFromDetails(); modalShowDetails.classList.remove('modal-show-details'); }
 
 // function to show the hide the image if it's not ready
 function showImageVisorInsertProduct(){ visor_InsertForm.classList.remove('hide-image');}
@@ -98,7 +104,7 @@ function clearInsertForm(){
     clearImage();
 }
 
-// function to clear all the form after to used
+// function to clear all the form full defails after to used
 function clearformFromDetails(){
     document.getElementById("productName-fromDetails").innerHTML = ""
     document.getElementById("caregory-fromDetails").innerHTML = ""
@@ -114,6 +120,23 @@ function clearformFromDetails(){
     document.getElementById("imageProduct-fromDetails").src = ""
     document.getElementById("idProduct-fromDetails").innerHTML = ""
     document.getElementById("Uid-fromDetails").innerHTML = ""
+}
+
+//function to clear all the form update after to used
+function clearformFormUpdate(){
+    updateProductForm['productName'].value = "";
+    updateProductForm['origin'].value = "";
+    updateProductForm['price'].value = ""; 
+    updateProductForm['MOQ'].value = "";
+    updateProductForm['discount'].value = "";
+    updateProductForm['category'].value = ""; 
+    updateProductForm['salesUnit'].value = ""; 
+    updateProductForm['description'].value = "";
+    updateProductForm['isAvailableCheck-update'].checked = "";
+    updateProductForm['isDisableCheck-update'].checked = "";
+    updateProductForm['inSeasonCheck-update'].checked = "";
+    visor_UpdateForm.src = " ";
+    clearImage();
 }
 
 // function to do Firebase Configuration
@@ -139,14 +162,16 @@ function loadImageOnVisor(){
         reader.onload = function(){
             const result = reader.result;
             visor_InsertForm.src = result;
+            visor_UpdateForm.src = result;
+            imagenIsUpdate = true;
             wrapper.classList.add("active");
         }
         reader.readAsDataURL(fileImg)
     }
     if(this.value){
         let valueStore = this.value;
-        fileName.textContent = valueStore
-        showImageVisorInsertProduct()
+        fileName.textContent = valueStore;
+        showImageVisorInsertProduct();
     }
 }
 
@@ -254,9 +279,8 @@ function linkShowDetails(idLink){
         document.getElementById("Uid-fromDetails").innerHTML = data.Uid
 
         showDetailsForm.addEventListener('submit', (e) => {
-            e.preventDefault()
-            closeModal_showDetails()
-            clearformFromDetails()
+            e.preventDefault();
+            closeModal_showDetails();
         })
     }) 
 }
@@ -313,40 +337,66 @@ function buttonEdit(idbutton){
         updateProductForm['isAvailableCheck-update'].checked = data.isAvailable;
         updateProductForm['isDisableCheck-update'].checked = data.isDisable;
         updateProductForm['inSeasonCheck-update'].checked = data.inSeason;
-        visor_UpdateForm.src = data.imageProduct;  
+        visor_UpdateForm.src = data.imageProduct;   
 
         // event to update the information on the server
         updateProductForm.addEventListener('submit', updateInfoOnServer)
-        updateProductForm.myParam = idbutton;
+        updateProductForm.paramIdBtn = idbutton;
     })
 }
 
 // function to update de information on the firebase
-function updateInfoOnServer(idbutton){
+async function updateInfoOnServer(values){
     // deprecate function this will be need update
     event.preventDefault()
 
-    firebase.database().ref(`${endPointDB}/${idbutton.currentTarget.myParam}`).update({
-        productName: updateProductForm['productName'].value,
-        origin: updateProductForm['origin'].value,
-        price: updateProductForm['price'].value,
-        MOQ: updateProductForm['MOQ'].value,
-        discount: updateProductForm['discount'].value,
-        category: updateProductForm['category'].value,
-        salesUnit: updateProductForm['salesUnit'].value,
-        isAvailable: updateProductForm['isAvailableCheck-update'].checked,
-        isDisable: updateProductForm['isDisableCheck-update'].checked,
-        inSeason: updateProductForm['inSeasonCheck-update'].checked,
-        description: updateProductForm['description'].value,
-    });              
-    closeModal_UpdateProduct();
-    getAllDataFromDB(); // function to reload de table
+    idProduct = values.currentTarget.paramIdBtn
+    var resultImage = ""
 
-    swal({
-        title: "Update completed!",
-        icon: "success",
-        button: "Done!",
-    });
+    if(Boolean(updateProductForm['productName'].value) &&
+        Boolean(updateProductForm['origin'].value) &&
+        Boolean(updateProductForm['price'].value) && 
+        Boolean(updateProductForm['discount'].value) &&
+        !(updateProductForm['category'].value === "Select category") &&
+        !(updateProductForm['salesUnit'].value === "Select option")
+    ){
+
+        // this mind the imagen is update also
+        if(imagenIsUpdate){
+
+            // load image of the product
+            var imageProduct = await upLoadImaProduct(getFile());
+            resultImage = String(imageProduct)
+        }
+        // the image is the same as before
+        else {
+            resultImage = updateProductForm['Image-load-udate-form'].src           
+        }
+
+        firebase.database().ref(`${endPointDB}/${idProduct}`).update({
+            productName: updateProductForm['productName'].value,
+            origin: updateProductForm['origin'].value,
+            price: updateProductForm['price'].value,
+            MOQ: updateProductForm['MOQ'].value,
+            discount: updateProductForm['discount'].value,
+            category: updateProductForm['category'].value,
+            salesUnit: updateProductForm['salesUnit'].value,
+            isAvailable: updateProductForm['isAvailableCheck-update'].checked,
+            isDisable: updateProductForm['isDisableCheck-update'].checked,
+            inSeason: updateProductForm['inSeasonCheck-update'].checked,
+            description: updateProductForm['description'].value,
+            imageProduct: resultImage
+        });              
+        closeModal_UpdateProduct();
+        getAllDataFromDB(); // function to reload de table
+
+        swal({
+            title: "Update completed!",
+            icon: "success",
+            button: "Done!",
+        });  
+        
+    } else { swal("Warning!!", "Any of the required fields are empty!!"); }
 }
 
 // function to delete de imageProduct from the storage
