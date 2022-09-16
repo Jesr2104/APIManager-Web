@@ -495,6 +495,42 @@ function calculateDiscount(discount, price){
     }
 }
 
+// function to search informaction on the table of the products
+function tableSearchFilter(){
+    let input, filter, table, tr;
+
+    input = document.getElementById('search-field-input');
+    table = document.getElementById('products-table');
+
+    filter = input.value.toLowerCase();
+    tr = table.getElementsByTagName('tr');    
+
+    for(let i = 0; i < tr.length; i++){
+        // the filtes that can be posible to apply are:
+        // Name, Ogirin, price and Categor
+        tdName = tr[i].getElementsByTagName('th')[1];
+        tdOrigin = tr[i].getElementsByTagName('th')[2];
+        tdPrice = tr[i].getElementsByTagName('th')[3];
+        tdCategory = tr[i].getElementsByTagName('th')[6];
+
+        if(tdName && tdOrigin && tdCategory){
+            txtValue_name = tdName.textContent || td.innerText;
+            txtValue_origin = tdOrigin.textContent || td.innerText;
+            txtValue_price = tdPrice.textContent || td.innerText;
+            txtValue_Category = tdCategory.textContent || td.innerText;
+
+            // create a string with all the row to search for the user filter
+            result = txtValue_name + " " + txtValue_origin + " " +
+            txtValue_price + " " + txtValue_Category
+
+            if(result.toLocaleLowerCase().indexOf(filter) > -1){
+                tr[i].style.display = "";
+            } 
+            else { tr[i].style.display = "none"; }
+        }
+    }    
+}
+
 // Events control -------------------->>>>
 //-------------------------------------------------------------------------
     // event to the button insert product
