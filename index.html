@@ -36,7 +36,7 @@
               <a class="navbar-item" href="/">
                 <span class="titleIcon material-icons md-35"> api </span>
                 <span class="titleText">Api Manager</span>
-              </a> 
+              </a>
             </div>
         </nav>
     </header>
@@ -44,12 +44,23 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="crud-container" >
-            <div class="crud-header">
+            <!-- Panel for put the title, search-field and insert new product -->
+            <div id="main-control">
+              <!-- left side => title -->
+              <div id="title-table">
                 <h1><span class="material-icons md-18"> push_pin </span>Products list</h1>
+              </div>
+              <!-- center side => search-field -->
+              <div id="search-field">
+                <input id="search-field" class="input" type="text" placeholder="Search...">
+              </div>
+              <!-- right side => insert-new-product -->
+              <div id="addnewProduct-btn">
                 <button class="button is-success" id="insertProduct"> 
-                    <span class="material-icons md-24"> note_add </span>
-                    <span> Add Product</span>
+                  <span class="material-icons md-24"> note_add </span>
+                  <span> Add Product</span>
                 </button>
+              </div>
             </div>
 
             <!-- Tabla -->
@@ -70,7 +81,6 @@
                 <tbody id="products-table">
                 </tbody>
               </table>
-
         </div>
     </main>
 
@@ -218,7 +228,7 @@
               <div class="image-selector">
                 <div class="container">
                   <div class="wrapper">
-                    <div class="image">
+                    <div onclick="defaultBtnActive()" class="image">
                       <img id="Image-load" src=" " alt="">
                     </div>
                     <div class="content">
@@ -390,7 +400,7 @@
               <div class="image-selector">
                 <div class="container">
                   <div class="wrapper">
-                    <div class="image">
+                    <div onclick="defaultBtnActive()" class="image">
                       <img id="Image-load-udate-form" src=" " alt="">
                     </div>
                     <div class="content">

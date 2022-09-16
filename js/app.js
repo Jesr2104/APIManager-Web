@@ -2,11 +2,11 @@
 ---------------------------------------------------------------------------------------------------
 Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
-5. login de la base as a administrator of the database.
-3. Colocar el usuario administrado que esta ligueado en el top
-4. agregar evento de load imagen al visor de la imagen tambien
-8. fallo al seleccionar una imagen en update y abrir el formulario de insertar nuevo producto 
-   sigue la imagen seleccionada
+1. login de la base as a administrator of the database.
+2. Colocar el usuario administrado que esta ligueado en el top
+3. crear un buscador de algun producto
+4. ordenador de productos
+5. controlar el tamaño del responsible
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -98,6 +98,7 @@ function clearInsertForm(){
     category.value = "Select category";
     salesUnit.value = "Select option";
     description.value = "";
+    visor_UpdateForm.src = " ";
     clearImage();
 }
 

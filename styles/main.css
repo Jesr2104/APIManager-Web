@@ -79,6 +79,7 @@ body
     border-radius: 0.5rem;
 }
 
+/** ya no se esta usando cuando se termine la nueva barra*/
 .crud-header
 {
     display: flex;
@@ -358,7 +359,7 @@ padding: 10px;
 }
 
 /**************************************************/
-/* property for over text on the table            */
+/* Property for over text on the table            */
 /**************************************************/
 .maxSizeText
 {
@@ -367,3 +368,31 @@ padding: 10px;
     overflow: hidden;
     white-space: nowrap;
 }
+
+/**************************************************/
+/* Header of the table with the search field      */
+/**************************************************/
+#title-table
+{
+    display: flex;
+    align-items: center;
+    margin-right: 15px;     
+}
+
+#search-field
+{
+    flex-grow: 1;
+    justify-content: stretch;
+}
+
+#search-field
+{
+    width: 50%;
+}
+
+#main-control
+{
+    display: flex;
+    padding: 15px;
+    border-bottom: 1px solid rgb(237, 237, 237);
+}  
