@@ -4,9 +4,8 @@ Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
 1. login de la base as a administrator of the database.
 2. Colocar el usuario administrado que esta ligueado en el top
-3. crear un buscador de algun producto
 4. ordenador de productos
-5. controlar el tamaño del responsible
+5. insertar fecha de insercion del producto
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -153,6 +152,33 @@ async function configuration(){
     firebase.initializeApp(firebaseConfig);
 }
 
+var stateOfOrder = 1;
+
+// function to order column
+function orderColumn(values){
+
+    data = values.currentTarget
+
+    console.log(data.innerText)
+
+    icon = document.getElementById('show')
+
+    if(stateOfOrder === 1){
+        icon.textContent = 'arrow_drop_down'
+        data.classList.add('selectHeader')
+        //console.log("Asc")
+    } else if (stateOfOrder === 2){
+        icon.textContent = "arrow_drop_up"
+        //console.log("Desc")
+    } else if (stateOfOrder === 3){
+        icon.textContent = ''
+        data.classList.remove('selectHeader')
+        stateOfOrder = 0
+        //console.log("reset")
+    }
+    stateOfOrder++
+}
+
 // function to load the image on the visor
 function loadImageOnVisor(){
     const fileImg = this.files[0];
@@ -181,6 +207,18 @@ function defaultBtnActive(){ defaultBtn.click() }
 function clearImage(){
     visor_InsertForm.src = " "
     wrapper.classList.remove("active")
+}
+
+// function to set the events of the table header for order row
+function getEventsForOrderData(){
+    let table, tr;
+
+    table = document.getElementById('table-products-headers');
+    ths = table.getElementsByTagName('th'); 
+
+    for(let i = 0; i < ths.length ; i++){
+        ths[i].addEventListener('click', orderColumn)
+    }
 }
 
 // function to upload the picture of the imageProduct
@@ -593,4 +631,5 @@ function tableSearchFilter(){
     // Functions main call  -------------------->>>>
     configuration() // function to setup the firebase database
     getAllDataFromDB() // function to load all the products on the table first time
+    getEventsForOrderData() // set the events for the buttons to order data on the table
 //--------------------------------------------------------------------------
