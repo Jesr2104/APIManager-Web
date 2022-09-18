@@ -6,6 +6,7 @@ Lista de tareas por realizar
 2. Colocar el usuario administrado que esta ligueado en el top
 4. ordenador de productos
 5. insertar fecha de insercion del producto
+6. how to hide the cursor at the start or end of the table
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -152,29 +153,31 @@ async function configuration(){
     firebase.initializeApp(firebaseConfig);
 }
 
+// 
 var stateOfOrder = 1;
 
 // function to order column
 function orderColumn(values){
-
     data = values.currentTarget
+    span = data.getElementsByTagName('span')
 
-    console.log(data.innerText)
+    if(stateOfOrder > 1 && span[0].innerHTML === ''){
+        console.log("Tengo que reiniciar")
+        console.log(stateOfOrder)
+    }
 
-    icon = document.getElementById('show')
-
+    // Asc
     if(stateOfOrder === 1){
-        icon.textContent = 'arrow_drop_down'
-        data.classList.add('selectHeader')
-        //console.log("Asc")
+        span[0].innerHTML = "arrow_drop_down";
+        data.classList.add('selectHeader');
+    // Desc
     } else if (stateOfOrder === 2){
-        icon.textContent = "arrow_drop_up"
-        //console.log("Desc")
+        span[0].innerHTML = 'arrow_drop_up'
+    // rest to regular order "order by inserted"
     } else if (stateOfOrder === 3){
-        icon.textContent = ''
+        span[0].innerHTML = ''
         data.classList.remove('selectHeader')
         stateOfOrder = 0
-        //console.log("reset")
     }
     stateOfOrder++
 }
@@ -217,7 +220,9 @@ function getEventsForOrderData(){
     ths = table.getElementsByTagName('th'); 
 
     for(let i = 0; i < ths.length ; i++){
-        ths[i].addEventListener('click', orderColumn)
+        if(!(ths[i].innerText === '#' || ths[i].innerText === 'MOQ' || ths[i].innerText === 'Options')){
+            ths[i].addEventListener('click', orderColumn)
+        } 
     }
 }
 
