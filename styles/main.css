@@ -1,5 +1,5 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
 
 :root
 {
@@ -394,5 +394,26 @@ padding: 10px;
 {
     display: flex;
     padding: 15px;
-    border-bottom: 1px solid rgb(237, 237, 237);
+    border-bottom: 1px solid rgb(237, 237, 237);    
+}
+
+/**************************************************/
+/* Header for the order buttons                   */
+/**************************************************/
+.header-order-by
+{
+    cursor: pointer;
+    background-color: #e4e4e4;
+    font-weight: 700;
+
+    /* to avoid select texto on the header of the table */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.selectHeader
+{
+    background-color: #dadada;
 }

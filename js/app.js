@@ -7,6 +7,7 @@ Lista de tareas por realizar
 4. ordenador de productos
 5. insertar fecha de insercion del producto
 6. how to hide the cursor at the start or end of the table
+7. configurar mi tipografia mejor hecho
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -19,6 +20,10 @@ const currency = '£'
 
 // check when the user change the image on the form
 var imagenIsUpdate = false
+
+// this variable save the 3 states of the order by
+// Asc, Desc, Without ordering
+var stateOfOrder = 1;
 
 // Modals
 //==========================================================================
@@ -153,33 +158,48 @@ async function configuration(){
     firebase.initializeApp(firebaseConfig);
 }
 
-// 
-var stateOfOrder = 1;
-
 // function to order column
 function orderColumn(values){
     data = values.currentTarget
     span = data.getElementsByTagName('span')
 
     if(stateOfOrder > 1 && span[0].innerHTML === ''){
-        console.log("Tengo que reiniciar")
-        console.log(stateOfOrder)
+        hideIcontoOrderTable()
     }
 
     // Asc
     if(stateOfOrder === 1){
+        data.classList.add('selectHeader') // change background of the select
         span[0].innerHTML = "arrow_drop_down";
-        data.classList.add('selectHeader');
+        // Function to order Asc
     // Desc
     } else if (stateOfOrder === 2){
         span[0].innerHTML = 'arrow_drop_up'
+        // function to order Desc
     // rest to regular order "order by inserted"
     } else if (stateOfOrder === 3){
         span[0].innerHTML = ''
         data.classList.remove('selectHeader')
+        // function to reset to default sorting
         stateOfOrder = 0
     }
     stateOfOrder++
+}
+
+// function to clear the header if the user press a different one
+function hideIcontoOrderTable(){
+    table = document.getElementById('table-products-headers');
+    spans = table.getElementsByTagName('span');
+    ths = table.getElementsByTagName('th');
+    stateOfOrder = 1; // reset the state to start on the first option: Asc
+
+    for(let i = 0; i < ths.length ; i++){
+        ths[i].classList.remove('selectHeader') // clear it's selected backgound color
+    }
+
+    for(let i = 0; i < spans.length ; i++){
+        spans[i].innerHTML = ''; // clear the tag of the icon
+    }
 }
 
 // function to load the image on the visor
@@ -262,7 +282,7 @@ function loadDataOnTable(productList){
         productTable.innerHTML += `
             <tr>
                 <th>${cont}</th>
-                <th class="maxSizeText" style="font-style: italic;"><a class="details-product" id="${products.Uid}">${products.productName}</a></th>
+                <th class="maxSizeText" style="font-style: italic;"><a class="name-links-details" id="${products.Uid}">${products.productName}</a></th>
                 <th class="maxSizeText" >${products.origin}</th>
                 <th>${calculateDiscount(products.discount, products.price)}</th>
                 <th>${products.discount} %</th>
@@ -280,7 +300,7 @@ function loadDataOnTable(productList){
         cont++
 
         // showLink to see the delails of the product
-        document.querySelectorAll('.details-product').forEach((link) => {
+        document.querySelectorAll('.name-links-details').forEach((link) => {
             link.addEventListener('click', (e) => {linkShowDetails(e.currentTarget.id)})
         })
 
