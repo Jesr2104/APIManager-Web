@@ -4,8 +4,6 @@ Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
 1. login de la base as a administrator of the database.
 2. Colocar el usuario administrado que esta ligueado en el top
-4. ordenador de productos
-5. insertar fecha de insercion del producto
 6. how to hide the cursor at the start or end of the table
 7. configurar mi tipografia mejor hecho
 ---------------------------------------------------------------------------------------------------
@@ -399,6 +397,7 @@ function linkShowDetails(idLink){
         document.getElementById("imageProduct-fromDetails").src = data.imageProduct
         document.getElementById("idProduct-fromDetails").innerHTML = data.idProduct
         document.getElementById("Uid-fromDetails").innerHTML = data.Uid
+        document.getElementById("date-fromDetails").innerHTML = data.date
 
         showDetailsForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -551,6 +550,16 @@ function getPostId(fullPath){ return fullPath.split("/")[4] }
 function getFile(){
     fileInput = document.querySelector("#default-btn")
     return fileInput.files[0];
+}
+
+// function to get the current date
+function getCurrentDate(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    
+    return yyyy + '/' + mm + '/' + dd
 }
 
 // function to get the code of the category
@@ -706,7 +715,8 @@ function tableSearchFilter(){
                 isDisable: document.getElementById("isDisableCheck").checked,
                 inSeason: document.getElementById("inSeasonCheck").checked,
                 description: description.value,
-                imageProduct: String(imageProduct)
+                imageProduct: String(imageProduct),
+                date: getCurrentDate()
             });
 
             closeModal_InsertProduct(); // function to hide the register modal
