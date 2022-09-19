@@ -159,12 +159,13 @@ async function configuration(){
 }
 
 // function to order column
-function orderColumn(values){
+function sortTableByColumn(values){
     data = values.currentTarget
     span = data.getElementsByTagName('span')
+    indexSelect = values.currentTarget.paramIndex
 
     if(stateOfOrder > 1 && span[0].innerHTML === ''){
-        hideIcontoOrderTable()
+        removeSelectSortByColumn()
     }
 
     // Asc
@@ -172,22 +173,82 @@ function orderColumn(values){
         data.classList.add('selectHeader') // change background of the select
         span[0].innerHTML = "arrow_drop_down";
         // Function to order Asc
+        withoutNameYet(indexSelect, 'asc')
     // Desc
     } else if (stateOfOrder === 2){
         span[0].innerHTML = 'arrow_drop_up'
         // function to order Desc
+        withoutNameYet(indexSelect, 'desc')
     // rest to regular order "order by inserted"
     } else if (stateOfOrder === 3){
         span[0].innerHTML = ''
         data.classList.remove('selectHeader')
         // function to reset to default sorting
+        withoutNameYet(indexSelect, 'reset')
         stateOfOrder = 0
     }
     stateOfOrder++
 }
 
+// funcion to sort the data on the table by column selected
+function withoutNameYet(indexSelect, orderFilter){
+    tableBody = document.getElementById('products-table')
+    const rows = Array.from(tableBody.rows)
+
+    // ASC
+    if(orderFilter === 'asc'){
+        if(indexSelect === 3 || indexSelect === 4){
+            var sortedRowsAsc = rows.sort(function(a,b){
+                const aText = a.cells[indexSelect].textContent;
+                const bText = b.cells[indexSelect].textContent;      
+                return aText.split(' ')[0] - bText.split(' ') [0] // split the quatity and rest between them
+            })
+        } else {
+            var sortedRowsAsc = rows.sort(function(a,b){
+                const aText = a.cells[indexSelect].textContent;
+                const bText = b.cells[indexSelect].textContent;
+                return aText.localeCompare(bText)
+            })
+        }        
+        loadSortedListByColumn(sortedRowsAsc)
+    // DESC
+    } else if(orderFilter === 'desc'){
+        if(indexSelect === 3 || indexSelect === 4){
+            var sortedRowsDesc = rows.sort(function(a,b){
+                const aText = a.cells[indexSelect].textContent;
+                const bText = b.cells[indexSelect].textContent;      
+                return bText.split(' ')[0] - aText.split(' ') [0] // split the quatity and rest between them
+            })
+        } else {
+            var sortedRowsDesc = rows.sort(function(a,b){
+                const aText = a.cells[indexSelect].textContent;
+                const bText = b.cells[indexSelect].textContent;
+                return bText.localeCompare(aText)
+            })
+        }
+        loadSortedListByColumn(sortedRowsDesc)        
+    // RESET
+    } else if(orderFilter === 'reset'){
+        var sortedRowsDesc = rows.sort(function(a,b){
+            const aText = a.cells[0].textContent;
+            const bText = b.cells[0].textContent;      
+            return aText.split(' ')[0] - bText.split(' ') [0] // split the quatity and rest between them
+        })
+        loadSortedListByColumn(sortedRowsDesc)
+    }
+}
+
+// this function load the sorted list on the table body
+function loadSortedListByColumn(sortedList){
+    tableBody.innerHTML = '' // leave the table empty
+    // loop the new order list and insert in the new order
+    sortedList.forEach( row => {
+        tableBody.appendChild(row)
+    })
+}
+
 // function to clear the header if the user press a different one
-function hideIcontoOrderTable(){
+function removeSelectSortByColumn(){
     table = document.getElementById('table-products-headers');
     spans = table.getElementsByTagName('span');
     ths = table.getElementsByTagName('th');
@@ -233,7 +294,7 @@ function clearImage(){
 }
 
 // function to set the events of the table header for order row
-function getEventsForOrderData(){
+function setEventsForOrderByColumn(){
     let table, tr;
 
     table = document.getElementById('table-products-headers');
@@ -241,7 +302,8 @@ function getEventsForOrderData(){
 
     for(let i = 0; i < ths.length ; i++){
         if(!(ths[i].innerText === '#' || ths[i].innerText === 'MOQ' || ths[i].innerText === 'Options')){
-            ths[i].addEventListener('click', orderColumn)
+            ths[i].addEventListener('click', sortTableByColumn)
+            ths[i].paramIndex = i
         } 
     }
 }
@@ -570,7 +632,7 @@ function tableSearchFilter(){
 
     for(let i = 0; i < tr.length; i++){
         // the filtes that can be posible to apply are:
-        // Name, Ogirin, price and Categor
+        // Name, Ogirin, price and Category
         tdName = tr[i].getElementsByTagName('th')[1];
         tdOrigin = tr[i].getElementsByTagName('th')[2];
         tdPrice = tr[i].getElementsByTagName('th')[3];
@@ -656,5 +718,5 @@ function tableSearchFilter(){
     // Functions main call  -------------------->>>>
     configuration() // function to setup the firebase database
     getAllDataFromDB() // function to load all the products on the table first time
-    getEventsForOrderData() // set the events for the buttons to order data on the table
+    setEventsForOrderByColumn() // set the events for the buttons to order data on the table
 //--------------------------------------------------------------------------
