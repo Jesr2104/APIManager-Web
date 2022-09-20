@@ -1,5 +1,7 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
 :root{
     --dark: #001233;
@@ -23,6 +25,8 @@
 
 .titleText{
     padding-left: .6rem;
+    font-size: 3rem;
+    font-family: 'Lobster', cursive;
 }
 
 .titleIcon{
@@ -32,6 +36,18 @@
 #table-Container{
     overflow: auto;
     height: 94%;
+}
+
+.name-links-details{
+    font-family: 'Roboto', sans-serif;
+    color: #9658fe;
+    font-size: 17px;
+}
+
+.number-style{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: #001233;
 }
 
 /**************************************************/
@@ -91,8 +107,6 @@ body{
 
 .navbar-item{
     color: var(--white);
-    font-weight: bold;
-    font-size: 30px;
     transition: .3s ease-in-out all;
     height: 8vh; /* height of the nav-bar*/
 }
@@ -125,9 +139,11 @@ body{
 }
 
 .modal-card-title{
+    font-family:'Roboto', sans-serif;
+    font-size: 1.8rem;
+    color: #858585;
     font-style: italic;
-    font-weight: bold;
-    font-weight: 900;
+    font-weight: 500;
 }
 
 .label{
@@ -355,6 +371,7 @@ legend {
 .header-order-by{
     cursor: pointer;
     background-color: #e4e4e4;
+    font-family:'Roboto', sans-serif;
     font-weight: 700;
 
     /* to avoid select texto on the header of the table */

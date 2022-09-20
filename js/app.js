@@ -340,7 +340,7 @@ function loadDataOnTable(productList){
     productList.forEach((products) => {
         productTable.innerHTML += `
             <tr>
-                <th>${cont}</th>
+                <th class="number-style">${cont}</th>
                 <th class="maxSizeText" style="font-style: italic;"><a class="name-links-details" id="${products.Uid}">${products.productName}</a></th>
                 <th class="maxSizeText" >${products.origin}</th>
                 <th>${calculateDiscount(products.discount, products.price)}</th>
