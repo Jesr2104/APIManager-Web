@@ -4,7 +4,6 @@ Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
 1. login de la base as a administrator of the database.
 2. Colocar el usuario administrado que esta ligueado en el top
-7. configurar mi tipografia mejor hecho
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -161,34 +160,32 @@ function sortTableByColumn(values){
     span = data.getElementsByTagName('span')
     indexSelect = values.currentTarget.paramIndex
 
-    if(stateOfOrder > 1 && span[0].innerHTML === ''){
-        removeSelectSortByColumn()
-    }
+    if(stateOfOrder > 1 && span[0].innerHTML === ''){ removeSelectSortByColumn() }
 
     // Asc
     if(stateOfOrder === 1){
         data.classList.add('selectHeader') // change background of the select
         span[0].innerHTML = "arrow_drop_down";
         // Function to order Asc
-        withoutNameYet(indexSelect, 'asc')
+        carculaterOrderByCulomn(indexSelect, 'asc')
     // Desc
     } else if (stateOfOrder === 2){
         span[0].innerHTML = 'arrow_drop_up'
         // function to order Desc
-        withoutNameYet(indexSelect, 'desc')
+        carculaterOrderByCulomn(indexSelect, 'desc')
     // rest to regular order "order by inserted"
     } else if (stateOfOrder === 3){
         span[0].innerHTML = ''
         data.classList.remove('selectHeader')
         // function to reset to default sorting
-        withoutNameYet(indexSelect, 'reset')
+        carculaterOrderByCulomn(indexSelect, 'reset')
         stateOfOrder = 0
     }
     stateOfOrder++
 }
 
 // funcion to sort the data on the table by column selected
-function withoutNameYet(indexSelect, orderFilter){
+function carculaterOrderByCulomn(indexSelect, orderFilter){
     tableBody = document.getElementById('products-table')
     const rows = Array.from(tableBody.rows)
 
@@ -447,7 +444,7 @@ function buttonEdit(idbutton){
         const data = thisProduct.val()
 
         updateProductForm['productName'].value = data.productName;
-        updateProductForm['origin'].value = data.origin;
+        updateProductForm['origin'].value = orderOriginContries(data.origin);
         updateProductForm['price'].value = data.price; 
         updateProductForm['MOQ'].value = data.MOQ;
         updateProductForm['discount'].value = data.discount;
@@ -457,7 +454,7 @@ function buttonEdit(idbutton){
         updateProductForm['isAvailableCheck-update'].checked = data.isAvailable;
         updateProductForm['isDisableCheck-update'].checked = data.isDisable;
         updateProductForm['inSeasonCheck-update'].checked = data.inSeason;
-        visor_UpdateForm.src = data.imageProduct;   
+        visor_UpdateForm.src = data.imageProduct;
 
         // event to update the information on the server
         updateProductForm.addEventListener('submit', updateInfoOnServer)
@@ -664,6 +661,21 @@ function tableSearchFilter(){
     }    
 }
 
+// function to order the origin of the product
+function orderOriginContries(stringConuntry){
+    // delete all the space between and separe it by slash
+    var countries = stringConuntry.replace(/\s/g, '').split('/').sort()
+    var newString = ""
+
+    for( i = 0 ; i < countries.length ; i++){
+        newString = newString + countries[i]
+        if(!(i+1 === countries.length)){
+            newString = newString + " / "
+        }
+    }
+    return newString
+}
+
 // Events control -------------------->>>>
 //-------------------------------------------------------------------------
     // event to the button insert product
@@ -704,7 +716,7 @@ function tableSearchFilter(){
                 Uid: getPostId(postRef.toString()),
                 idProduct: uuid.v4(),
                 productName: productName.value,
-                origin: productOrigin.value,
+                origin: orderOriginContries(productOrigin.value),
                 price: price.value,
                 MOQ: MOQ.value,
                 discount: discount.value,
