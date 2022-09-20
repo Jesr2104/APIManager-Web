@@ -1,556 +1,557 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Link to css file -->
+      <link rel="stylesheet" href="styles/main.css">
 
-    <!-- Link to css file -->
-    <link rel="stylesheet" href="styles/main.css">
+      <!-- Link icons Material Design -->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Link icons Material Design -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!-- Title for the web -->
+      <title>API Crud Manager</title>
 
-    <!-- Title for the web -->
-    <title>API Crud Manager</title>
+      <!-- Import to Firebase library -->
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js"></script>
 
-    <!-- Import to Firebase library -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js"></script>
+      <!-- library to get the unique ID -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.7/uuid.min.js"></script>
 
-    <!-- library to get the unique ID -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.7/uuid.min.js"></script>
+      <!-- import library of the dialog alert SweetAlert -->
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
 
-    <!-- import library of the dialog alert SweetAlert -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-</head>
-
-<body>
-
-    <!-- Header -->
-    <header>
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand"> 
-              <a class="navbar-item" href="/">
-                <span class="titleIcon material-icons md-35"> api </span>
-                <span class="titleText">Api Manager</span>
-              </a>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="crud-container" >
-            <!-- Panel for put the title, search-field and insert new product -->
-            <div id="main-control">
-              <!-- left side => title -->
-              <div id="title-table">
-                <h1><span class="material-icons md-18"> push_pin </span>Products list</h1>
+  <body>
+      <!-- Header -->
+      <header>
+          <nav class="navbar" role="navigation" aria-label="main navigation">
+              <div class="navbar-brand"> 
+                <a class="navbar-item" href="/">
+                  <span class="titleIcon material-icons md-35"> api </span>
+                  <span class="titleText">Api Manager</span>
+                </a>
               </div>
-              <!-- center side => search-field -->
-              <div id="search-field">
-                <input id="search-field-input" onkeyup="tableSearchFilter()" class="input" type="text" placeholder="Search...">
+          </nav>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content" >
+          <div class="crud-container" >
+              <!-- Panel for put the title, search-field and insert new product -->
+              <div id="main-control">
+                <!-- left side => title -->
+                <div id="title-table">
+                  <h1><span class="material-icons md-18"> push_pin </span>Products list</h1>
+                </div>
+                <!-- center side => search-field -->
+                <div id="search-field">
+                  <input id="search-field-input" onkeyup="tableSearchFilter()" class="input" type="text" placeholder="Search...">
+                </div>
+                <!-- right side => insert-new-product -->
+                <div id="addnewProduct-btn">
+                  <button class="button is-success" id="insertProduct"> 
+                    <span class="material-icons md-24"> note_add </span>
+                    <span> Add Product</span>
+                  </button>
+                </div>
               </div>
-              <!-- right side => insert-new-product -->
-              <div id="addnewProduct-btn">
-                <button class="button is-success" id="insertProduct"> 
-                  <span class="material-icons md-24"> note_add </span>
-                  <span> Add Product</span>
-                </button>
-              </div>
-            </div>
-            <!-- Tabla -->
-            <table class="table">
-                <thead id="table-products-headers" class="table-header">
+
+              <!-- div to wrapp the table and control the scroll -->
+              <div id="table-Container">
+                <!-- Tabla -->
+                <table class="table">
+                  <thead id="table-products-headers" class="table-header">
+                    <tr class="main-header">
+                      <th class="header-order-by">#</th>
+                      <th class="header-order-by">Name <span class="material-icons md-18"></span></th>
+                      <th class="header-order-by">Origin <span class="material-icons md-18"></span></th>
+                      <th class="header-order-by">Price <span class="material-icons md-18"></span></th>
+                      <th class="header-order-by">Discount <span class="material-icons md-18"></span></th>
+                      <th class="header-order-by">MOQ</th>
+                      <th class="header-order-by">Category <span class="material-icons md-18"></span></th>
+                      <th class="header-order-by">Sales Unit <span class="material-icons md-18"></span></th>
+                      <th class="header-order-by">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products-table"></tbody>
+                </table>
+              </div>            
+          </div>
+      </main>
+
+      <!-- Card to insert new product -->
+      <div class="modal" id="modal-insert-product">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+
+            <!-- header of the Card to insert new product -->
+            <header class="modal-card-head">
+              <p class="modal-card-title">Insert new product</p>
+              <button class="delete" aria-label="close" id="closeRegisterModal"></button>
+            </header>
+            
+            <section class="modal-card-body">
+              <!-- Content ... -->
+              <form id="newProduct-form">
+
+                <!-- field product name -->
+                <div class="field">
+                  <label class="label">Name *</label>
+                  <div class="control">
+                    <input class="input" type="text" id="productName" placeholder="Product Name">
+                  </div>
+                </div>
+
+                <!-- field origin -->
+                <div class="field">
+                  <label class="label">Origin *</label>
+                  <div class="control">
+                    <input class="input" type="text" id="origin" placeholder="Origin">
+                  </div>
+                </div>
+
+                <!-- table to share the space between Price, MOQ, Discount-->
+                <table class="table" style="margin-bottom: 0rem !important;">
+                  <tbody>
+                    <tr>
+                      <!-- style to use all space of the field -->
+                      <th style="padding: 0rem 0rem 1rem 0rem;">
+                        <!-- field price -->
+                        <div class="field">
+                          <label class="label">Price *</label>
+                          <div class="control">
+                            <input class="input" type="number" step="0.01" id="price" placeholder="Price">
+                          </div>
+                        </div>                       
+                      </th>
+                      <!-- style to use all space of the field -->
+                      <th style="padding: 0rem 1rem 0rem 1rem;">
+                        <!-- field MOQ -->
+                        <div class="field">
+                          <label class="label">MOQ *</label>
+                          <div class="control">
+                            <input class="input" type="number" id="MOQ" placeholder="Min Quantity Order">
+                          </div>
+                        </div>
+                      </th>
+                      <!-- style to use all space of the field -->
+                      <th style="padding: 0rem 0rem 1rem 0rem;">
+                        <!-- field discount -->
+                        <div class="field">
+                          <label class="label">Discount *</label>
+                          <div class="control">
+                            <input class="input" type="number" id="discount" placeholder="Discount">
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- table to share the space between category, sales unit -->
+                <table style="margin-bottom: 1rem;">
+                  <th>
+                    <!-- Category -->
+                    <div class="field">
+                      <label class="label">Category *</label>
+                      <div class="control">
+                        <div class="select">
+                          <select id="category">
+                            <option>Select category</option>
+                            <option value="1">Fruits</option>
+                            <option value="2">Vergetables</option>
+                            <option value="3">Fresh Herbs</option>
+                            <option value="4">Dried Fruits and Nusts</option>
+                            <option value="5">Mushrooms</option>
+                            <option value="0">Others</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th style="padding: 0 0 0 1rem;">
+                    <!-- Sales Unit -->
+                    <div class="field">
+                      <label class="label">Sales Unit *</label>
+                      <div class="control">
+                        <div class="select">
+                          <select id="salesUnit">
+                            <option>Select option</option>
+                            <option>Unit</option>
+                            <option>Kg</option>
+                            <option>g</option>
+                            <option>Bunsh</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>                  
+                  </th>
+                </table>
+
+                <!-- complement to show the checkBoxs for: Available, Disable and InSeason -->
+                <fieldset>
+                  <legend> Choose you features...</legend>
+
+                  <!-- Control check Available -->
+                  <div class="switch" style="display: flex;">
+                    <label style="padding-right: 10px;">Available</label>
+                    <input type="checkbox" id="isAvailableCheck" checked>                        
+                  </div>
+
+                  <!-- Control check disable -->
+                  <div class="switch" style="display: flex;">
+                    <label style="padding-right: 10px;">Disable</label>
+                    <input type="checkbox" id="isDisableCheck">                        
+                  </div>
+
+                  <!-- Control check Season -->
+                  <div class="switch" style="display: flex;">
+                    <label style="padding-right: 10px;">Season</label>
+                    <input type="checkbox" id="inSeasonCheck">                        
+                  </div>
+                </fieldset> 
+                
+                <!-- Description Field -->
+                <div class="field">
+                  <label class="label">Description</label>
+                  <div class="control">
+                    <textarea class="textarea" id="description" placeholder="Product Description..."></textarea>
+                  </div>
+                </div>              
+
+                <!-- Complement to select and show product image -->
+                <div class="image-selector">
+                  <div class="container">
+                    <div class="wrapper">
+                      <div onclick="defaultBtnActive()" class="image">
+                        <img id="Image-load" src=" " alt="">
+                      </div>
+                      <div class="content">
+                        <div class="icon"><span class="material-icons md-48"> cloud_upload </span></div>
+                        <div class="text">No file chosen, yet!</div>
+                      </div>
+                      <div id="cancel-btn"><span class="material-icons md-18"> close </span></div>
+                      <div class="fileName">File name here</div>
+                    </div>
+                    <input id="default-btn" type="file" hidden accept="image/png, image/jpg">
+                    <button type="button" onclick="defaultBtnActive()" id="custom-btn">Choose a file</button>
+                  </div>
+                </div>
+            </section>
+
+            <!-- Footer of the form to insert new product -->
+            <footer class="modal-card-foot">
+              <button type="submit" class="button is-success">
+                  <span class="material-icons md-24"> save </span>
+                  <span> Insert </span>
+              </button>
+            </form>
+            </footer>
+          </div>
+      </div>
+
+      <!-- Card to Update product -->
+      <div class="modal" id="modal-update-product">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+
+            <!-- header of the Card to insert new product -->
+            <header class="modal-card-head">
+              <p class="modal-card-title">Update product</p>
+              <button class="delete" aria-label="close" id="closeUpdateModal"></button>
+            </header>
+            
+            <!-- section of the form to wrap all form -->
+            <section class="modal-card-body">
+              <!-- Content ... -->
+              <form id="updateProduct-form">
+              
+                <!-- field product name -->
+                <div class="field">
+                  <label class="label">Name *</label>
+                  <div class="control">
+                    <input class="input" type="text" id="productName" placeholder="Product Name">
+                  </div>
+                </div>
+
+                <!-- field origin -->
+                <div class="field">
+                  <label class="label">Origin *</label>
+                  <div class="control">
+                    <input class="input" type="text" id="origin" placeholder="Origin">
+                  </div>
+                </div>
+
+                <!-- table to share the space between Price, MOQ, Discount-->
+                <table class="table" style="margin-bottom: 0rem !important;">
+                  <tbody>
+                    <tr>
+                      <!-- style to use all space of the field -->
+                      <th style="padding: 0rem 0rem 1rem 0rem;">
+                        <!-- field price -->
+                        <div class="field">
+                          <label class="label">Price *</label>
+                          <div class="control">
+                            <input class="input" type="number" step="0.01" id="price" placeholder="Price">
+                          </div>
+                        </div>                       
+                      </th>
+                      <!-- style to use all space of the field -->
+                      <th style="padding: 0rem 1rem 0rem 1rem;">
+                        <!-- field MOQ -->
+                        <div class="field">
+                          <label class="label">MOQ *</label>
+                          <div class="control">
+                            <input class="input" type="number" id="MOQ" placeholder="Min Quantity Order">
+                          </div>
+                        </div>
+                      </th>
+                      <!-- style to use all space of the field -->
+                      <th style="padding: 0rem 0rem 1rem 0rem;">
+                        <!-- field discount -->
+                        <div class="field">
+                          <label class="label">Discount *</label>
+                          <div class="control">
+                            <input class="input" type="number" id="discount" placeholder="Discount">
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- table to share the space between category, sales unit -->
+                <table style="margin-bottom: 1rem;">
+                  <th>
+                    <!-- Category -->
+                    <div class="field">
+                      <label class="label">Category *</label>
+                      <div class="control">
+                        <div class="select">
+                          <select id="category">
+                            <option>Select category</option>
+                            <option value="1">Fruits</option>
+                            <option value="2">Vergetables</option>
+                            <option value="3">Fresh Herbs</option>
+                            <option value="4">Dried Fruits and Nusts</option>
+                            <option value="5">Mushrooms</option>
+                            <option value="0">Others</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th style="padding: 0 0 0 1rem;">
+                    <!-- Sales Unit -->
+                    <div class="field">
+                      <label class="label">Sales Unit *</label>
+                      <div class="control">
+                        <div class="select">
+                          <select id="salesUnit">
+                            <option>Select option</option>
+                            <option>Unit</option>
+                            <option>Kg</option>
+                            <option>g</option>
+                            <option>Bunsh</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>                  
+                  </th>
+                </table>
+
+                <!-- complement to show the checkBoxs for: Available, Disable and InSeason -->
+                <fieldset>
+                  <legend> Choose you features...</legend>
+
+                  <!-- Control check Available -->
+                  <div class="switch" style="display: flex;">
+                    <label style="padding-right: 10px;">Available</label>
+                    <input type="checkbox" id="isAvailableCheck-update">                        
+                  </div>
+
+                  <!-- Control check disable -->
+                  <div class="switch" style="display: flex;">
+                    <label style="padding-right: 10px;">Disable</label>
+                    <input type="checkbox" id="isDisableCheck-update">                        
+                  </div>
+
+                  <!-- Control check Season -->
+                  <div class="switch" style="display: flex;">
+                    <label style="padding-right: 10px;">Season</label>
+                    <input type="checkbox" id="inSeasonCheck-update">                        
+                  </div>
+                </fieldset>              
+                
+                <!-- Description Field -->
+                <div class="field">
+                  <label class="label">Description</label>
+                  <div class="control">
+                    <textarea class="textarea" id="description" placeholder="Product Description..."></textarea>
+                  </div>
+                </div>
+
+                <!-- Complement to select and show product image -->
+                <div class="image-selector">
+                  <div class="container">
+                    <div class="wrapper">
+                      <div onclick="defaultBtnActive()" class="image">
+                        <img id="Image-load-udate-form" src=" " alt="">
+                      </div>
+                      <div class="content">
+                        <div class="icon"><span class="material-icons md-48"> cloud_upload </span></div>
+                        <div class="text">No file chosen, yet!</div>
+                      </div>
+                      <div id="cancel-btn"><span class="material-icons md-18"> close </span></div>
+                      <div class="fileName">File name here</div>
+                    </div>
+                    <input id="default-btn" type="file" hidden accept="image/png, image/jpg">
+                    <button type="button" onclick="defaultBtnActive()" id="custom-btn">Choose a file</button>
+                  </div>
+                </div>
+            </section>
+
+            <!-- Footer of the form to insert new product -->
+            <footer class="modal-card-foot">
+              <button type="submit" class="button is-success">
+                  <span class="material-icons md-24"> save </span>
+                  <span> Update </span>
+              </button>
+            </form>
+            </footer>
+          </div>
+      </div>
+
+      <!-- Card to show full details fo the product -->
+      <div class="modal" id="modal-show-details">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+
+            <!-- header of the Card to show details product -->
+            <header class="modal-card-head">
+              <p class="modal-card-title">Product Details</p>
+            </header>
+
+            <!-- section of the form to wrap all form -->
+            <section class="modal-card-body">
+
+              <!-- Content ... -->
+              <form id="showDetails-form">
+
+                <table style="width: 100%;">
                   <tr>
-                    <th class="header-order-by">#</th>
-                    <th class="header-order-by">Name <span class="material-icons md-18"></span></th>
-                    <th class="header-order-by">Origin <span class="material-icons md-18"></span></th>
-                    <th class="header-order-by">Price <span class="material-icons md-18"></span></th>
-                    <th class="header-order-by">Discount <span class="material-icons md-18"></span></th>
-                    <th class="header-order-by">MOQ</th>
-                    <th class="header-order-by">Category <span class="material-icons md-18"></span></th>
-                    <th class="header-order-by">Sales Unit <span class="material-icons md-18"></span></th>
-                    <th class="header-order-by">Options</th>
+                    <td>
+                      <img id="imageProduct-fromDetails" src="" width="160" height="200">
+                    </td>
+                    <td>
+                      <!-- first code block ==> name, category, origin -->
+                      <div>
+                        <label class="label-details">Product Name:</label>
+                        <p></p>
+                        <span id="productName-fromDetails"></span>
+                      </div>
+
+                      <div>
+                        <label class="label-details">Category:</label>
+                        <p></p>
+                        <img id="iconCategory-fromDetails" src=" " width="15px" height="15px">
+                        <span id="caregory-fromDetails">result</span>
+                      </div>
+
+                      <div>
+                        <label class="label-details">Product Origin:</label>
+                        <p></p>
+                        <span id="origin-fromDetails">result</span>
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                <tbody id="products-table">
-                </tbody>
-              </table>
-        </div>
-    </main>
+                </table>
 
-    <!-- Card to insert new product -->
-    <div class="modal" id="modal-insert-product">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-
-          <!-- header of the Card to insert new product -->
-          <header class="modal-card-head">
-            <p class="modal-card-title">Insert new product</p>
-            <button class="delete" aria-label="close" id="closeRegisterModal"></button>
-          </header>
-          
-          <section class="modal-card-body">
-            <!-- Content ... -->
-            <form id="newProduct-form">
-
-              <!-- field product name -->
-              <div class="field">
-                <label class="label">Name *</label>
-                <div class="control">
-                  <input class="input" type="text" id="productName" placeholder="Product Name">
+                <!-- second code block ==> description, price, discount, MOQ -->
+                <div>
+                  <label class="label-details">Description:</label>
+                  <p></p>
+                  <span id="Description-fromDetails">result</span>
                 </div>
-              </div>
-
-              <!-- field origin -->
-              <div class="field">
-                <label class="label">Origin *</label>
-                <div class="control">
-                  <input class="input" type="text" id="origin" placeholder="Origin">
+                
+                <div style="margin-top: 12px;">
+                  <label class="label-details">Price:</label>
+                  <span id="price-fromDetails">result</span>
                 </div>
-              </div>
 
-              <!-- table to share the space between Price, MOQ, Discount-->
-              <table class="table" style="margin-bottom: 0rem !important;">
-                <tbody>
+                <div>
+                  <label class="label-details">Discount:</label>
+                  <span id="Discount-fromDetails">result</span>
+                </div>
+                
+                <div>
+                  <label class="label-details">MOQ:</label>
+                  <span id="MOQ-fromDetails">result</span>
+                </div> 
+                
+                <div style="margin-top: 12px;">
+                  <label class="label-details">Date of Inserted:</label>
+                  <span id="date-fromDetails">result</span>
+                </div>
+
+                <!-- third code block ==> season, available, disable -->
+                <table id="tablechecks">
                   <tr>
-                    <!-- style to use all space of the field -->
-                    <th style="padding: 0rem 0rem 1rem 0rem;">
-                      <!-- field price -->
-                      <div class="field">
-                        <label class="label">Price *</label>
-                        <div class="control">
-                          <input class="input" type="number" step="0.01" id="price" placeholder="Price">
-                        </div>
-                      </div>                       
-                    </th>
-                    <!-- style to use all space of the field -->
-                    <th style="padding: 0rem 1rem 0rem 1rem;">
-                      <!-- field MOQ -->
-                      <div class="field">
-                        <label class="label">MOQ *</label>
-                        <div class="control">
-                          <input class="input" type="number" id="MOQ" placeholder="Min Quantity Order">
-                        </div>
+                    <td>
+                      <div style="margin-right: 15px;">
+                        <label class="label-details">In Season:</label>
+                        <span id="inSeason-fromDetails">result</span>
                       </div>
-                    </th>
-                    <!-- style to use all space of the field -->
-                    <th style="padding: 0rem 0rem 1rem 0rem;">
-                      <!-- field discount -->
-                      <div class="field">
-                        <label class="label">Discount *</label>
-                        <div class="control">
-                          <input class="input" type="number" id="discount" placeholder="Discount">
-                        </div>
+                    </td>
+                    <td>
+                      <div style="margin-right: 15px;">
+                        <label class="label-details">Is Available:</label>
+                        <span id="isAvailable-fromDetails">result</span>
                       </div>
-                    </th>
+                    </td>
+                    <td>
+                      <div style="margin-right: 15px;">
+                        <label class="label-details">Is Disable:</label>
+                        <span id="isDisable-fromDetails">result</span>
+                      </div>
+                    </td>
                   </tr>
-                </tbody>
-              </table>
+                </table>
 
-              <!-- table to share the space between category, sales unit -->
-              <table style="margin-bottom: 1rem;">
-                <th>
-                  <!-- Category -->
-                  <div class="field">
-                    <label class="label">Category *</label>
-                    <div class="control">
-                      <div class="select">
-                        <select id="category">
-                          <option>Select category</option>
-                          <option value="1">Fruits</option>
-                          <option value="2">Vergetables</option>
-                          <option value="3">Fresh Herbs</option>
-                          <option value="4">Dried Fruits and Nusts</option>
-                          <option value="5">Mushrooms</option>
-                          <option value="0">Others</option>
-                        </select>
-                      </div>
-                    </div>
+                <!-- Frame with the Ids information -->
+                <div class="frame-fromDetails">
+                  <div>
+                    <span>Special identifiers</span>
                   </div>
-                </th>
-                <th style="padding: 0 0 0 1rem;">
-                  <!-- Sales Unit -->
-                  <div class="field">
-                    <label class="label">Sales Unit *</label>
-                    <div class="control">
-                      <div class="select">
-                        <select id="salesUnit">
-                          <option>Select option</option>
-                          <option>Unit</option>
-                          <option>Kg</option>
-                          <option>g</option>
-                          <option>Bunsh</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>                  
-                </th>
-              </table>
-
-              <!-- complement to show the checkBoxs for: Available, Disable and InSeason -->
-              <fieldset>
-                <legend> Choose you features...</legend>
-
-                <!-- Control check Available -->
-                <div class="switch" style="display: flex;">
-                  <label style="padding-right: 10px;">Available</label>
-                  <input type="checkbox" id="isAvailableCheck" checked>                        
-                </div>
-
-                <!-- Control check disable -->
-                <div class="switch" style="display: flex;">
-                  <label style="padding-right: 10px;">Disable</label>
-                  <input type="checkbox" id="isDisableCheck">                        
-                </div>
-
-                <!-- Control check Season -->
-                <div class="switch" style="display: flex;">
-                  <label style="padding-right: 10px;">Season</label>
-                  <input type="checkbox" id="inSeasonCheck">                        
-                </div>
-              </fieldset> 
-              
-              <!-- Description Field -->
-              <div class="field">
-                <label class="label">Description</label>
-                <div class="control">
-                  <textarea class="textarea" id="description" placeholder="Product Description..."></textarea>
-                </div>
-              </div>              
-
-              <!-- Complement to select and show product image -->
-              <div class="image-selector">
-                <div class="container">
-                  <div class="wrapper">
-                    <div onclick="defaultBtnActive()" class="image">
-                      <img id="Image-load" src=" " alt="">
-                    </div>
-                    <div class="content">
-                      <div class="icon"><span class="material-icons md-48"> cloud_upload </span></div>
-                      <div class="text">No file chosen, yet!</div>
-                    </div>
-                    <div id="cancel-btn"><span class="material-icons md-18"> close </span></div>
-                    <div class="fileName">File name here</div>
+                  <hr class="lineOnFrame-fromDetails">
+                  <div>
+                    <label class="label-details">IDProduct:</label>
+                    <span id="idProduct-fromDetails">result</span>
                   </div>
-                  <input id="default-btn" type="file" hidden accept="image/png, image/jpg">
-                  <button type="button" onclick="defaultBtnActive()" id="custom-btn">Choose a file</button>
-                </div>
-              </div>
-          </section>
-
-          <!-- Footer of the form to insert new product -->
-          <footer class="modal-card-foot">
-            <button type="submit" class="button is-success">
-                <span class="material-icons md-24"> save </span>
-                <span> Insert </span>
-            </button>
-          </form>
-          </footer>
-        </div>
-    </div>
-
-    <!-- Card to Update product -->
-    <div class="modal" id="modal-update-product">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-
-          <!-- header of the Card to insert new product -->
-          <header class="modal-card-head">
-            <p class="modal-card-title">Update product</p>
-            <button class="delete" aria-label="close" id="closeUpdateModal"></button>
-          </header>
-          
-          <!-- section of the form to wrap all form -->
-          <section class="modal-card-body">
-            <!-- Content ... -->
-            <form id="updateProduct-form">
-             
-              <!-- field product name -->
-              <div class="field">
-                <label class="label">Name *</label>
-                <div class="control">
-                  <input class="input" type="text" id="productName" placeholder="Product Name">
-                </div>
-              </div>
-
-              <!-- field origin -->
-              <div class="field">
-                <label class="label">Origin *</label>
-                <div class="control">
-                  <input class="input" type="text" id="origin" placeholder="Origin">
-                </div>
-              </div>
-
-              <!-- table to share the space between Price, MOQ, Discount-->
-              <table class="table" style="margin-bottom: 0rem !important;">
-                <tbody>
-                  <tr>
-                    <!-- style to use all space of the field -->
-                    <th style="padding: 0rem 0rem 1rem 0rem;">
-                      <!-- field price -->
-                      <div class="field">
-                        <label class="label">Price *</label>
-                        <div class="control">
-                          <input class="input" type="number" step="0.01" id="price" placeholder="Price">
-                        </div>
-                      </div>                       
-                    </th>
-                    <!-- style to use all space of the field -->
-                    <th style="padding: 0rem 1rem 0rem 1rem;">
-                      <!-- field MOQ -->
-                      <div class="field">
-                        <label class="label">MOQ *</label>
-                        <div class="control">
-                          <input class="input" type="number" id="MOQ" placeholder="Min Quantity Order">
-                        </div>
-                      </div>
-                    </th>
-                    <!-- style to use all space of the field -->
-                    <th style="padding: 0rem 0rem 1rem 0rem;">
-                      <!-- field discount -->
-                      <div class="field">
-                        <label class="label">Discount *</label>
-                        <div class="control">
-                          <input class="input" type="number" id="discount" placeholder="Discount">
-                        </div>
-                      </div>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- table to share the space between category, sales unit -->
-              <table style="margin-bottom: 1rem;">
-                <th>
-                  <!-- Category -->
-                  <div class="field">
-                    <label class="label">Category *</label>
-                    <div class="control">
-                      <div class="select">
-                        <select id="category">
-                          <option>Select category</option>
-                          <option value="1">Fruits</option>
-                          <option value="2">Vergetables</option>
-                          <option value="3">Fresh Herbs</option>
-                          <option value="4">Dried Fruits and Nusts</option>
-                          <option value="5">Mushrooms</option>
-                          <option value="0">Others</option>
-                        </select>
-                      </div>
-                    </div>
+    
+                  <div>
+                    <label class="label-details">UID:</label>
+                    <span id="Uid-fromDetails">result</span>
                   </div>
-                </th>
-                <th style="padding: 0 0 0 1rem;">
-                  <!-- Sales Unit -->
-                  <div class="field">
-                    <label class="label">Sales Unit *</label>
-                    <div class="control">
-                      <div class="select">
-                        <select id="salesUnit">
-                          <option>Select option</option>
-                          <option>Unit</option>
-                          <option>Kg</option>
-                          <option>g</option>
-                          <option>Bunsh</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>                  
-                </th>
-              </table>
-
-              <!-- complement to show the checkBoxs for: Available, Disable and InSeason -->
-              <fieldset>
-                <legend> Choose you features...</legend>
-
-                <!-- Control check Available -->
-                <div class="switch" style="display: flex;">
-                  <label style="padding-right: 10px;">Available</label>
-                  <input type="checkbox" id="isAvailableCheck-update">                        
                 </div>
+                
+            </section>
 
-                <!-- Control check disable -->
-                <div class="switch" style="display: flex;">
-                  <label style="padding-right: 10px;">Disable</label>
-                  <input type="checkbox" id="isDisableCheck-update">                        
-                </div>
+            <footer class="modal-card-foot">
+              <button type="submit" class="button is-success">
+                  <span> Close </span>
+              </button>
+            </form>
+            </footer>
+          </div>
+      </div>
 
-                <!-- Control check Season -->
-                <div class="switch" style="display: flex;">
-                  <label style="padding-right: 10px;">Season</label>
-                  <input type="checkbox" id="inSeasonCheck-update">                        
-                </div>
-              </fieldset>              
-              
-              <!-- Description Field -->
-              <div class="field">
-                <label class="label">Description</label>
-                <div class="control">
-                  <textarea class="textarea" id="description" placeholder="Product Description..."></textarea>
-                </div>
-              </div>
-
-              <!-- Complement to select and show product image -->
-              <div class="image-selector">
-                <div class="container">
-                  <div class="wrapper">
-                    <div onclick="defaultBtnActive()" class="image">
-                      <img id="Image-load-udate-form" src=" " alt="">
-                    </div>
-                    <div class="content">
-                      <div class="icon"><span class="material-icons md-48"> cloud_upload </span></div>
-                      <div class="text">No file chosen, yet!</div>
-                    </div>
-                    <div id="cancel-btn"><span class="material-icons md-18"> close </span></div>
-                    <div class="fileName">File name here</div>
-                  </div>
-                  <input id="default-btn" type="file" hidden accept="image/png, image/jpg">
-                  <button type="button" onclick="defaultBtnActive()" id="custom-btn">Choose a file</button>
-                </div>
-              </div>
-          </section>
-
-          <!-- Footer of the form to insert new product -->
-          <footer class="modal-card-foot">
-            <button type="submit" class="button is-success">
-                <span class="material-icons md-24"> save </span>
-                <span> Update </span>
-            </button>
-          </form>
-          </footer>
-        </div>
-    </div>
-
-    <!-- Card to show full details fo the product -->
-    <div class="modal" id="modal-show-details">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-
-          <!-- header of the Card to show details product -->
-          <header class="modal-card-head">
-            <p class="modal-card-title">Product Details</p>
-          </header>
-
-          <!-- section of the form to wrap all form -->
-          <section class="modal-card-body">
-
-            <!-- Content ... -->
-            <form id="showDetails-form">
-
-              <table style="width: 100%;">
-                <tr>
-                  <td>
-                    <img id="imageProduct-fromDetails" src="" width="160" height="200">
-                  </td>
-                  <td>
-                    <!-- first code block ==> name, category, origin -->
-                    <div>
-                      <label class="label-details">Product Name:</label>
-                      <p></p>
-                      <span id="productName-fromDetails"></span>
-                    </div>
-
-                    <div>
-                      <label class="label-details">Category:</label>
-                      <p></p>
-                      <img id="iconCategory-fromDetails" src=" " width="15px" height="15px">
-                      <span id="caregory-fromDetails">result</span>
-                    </div>
-
-                    <div>
-                      <label class="label-details">Product Origin:</label>
-                      <p></p>
-                      <span id="origin-fromDetails">result</span>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- second code block ==> description, price, discount, MOQ -->
-              <div>
-                <label class="label-details">Description:</label>
-                <p></p>
-                <span id="Description-fromDetails">result</span>
-              </div>
-              
-              <div style="margin-top: 12px;">
-                <label class="label-details">Price:</label>
-                <span id="price-fromDetails">result</span>
-              </div>
-
-              <div>
-                <label class="label-details">Discount:</label>
-                <span id="Discount-fromDetails">result</span>
-              </div>
-              
-              <div>
-                <label class="label-details">MOQ:</label>
-                <span id="MOQ-fromDetails">result</span>
-              </div> 
-              
-              <div style="margin-top: 12px;">
-                <label class="label-details">Date of Inserted:</label>
-                <span id="date-fromDetails">result</span>
-              </div>
-
-              <!-- third code block ==> season, available, disable -->
-              <table id="tablechecks">
-                <tr>
-                  <td>
-                    <div style="margin-right: 15px;">
-                      <label class="label-details">In Season:</label>
-                      <span id="inSeason-fromDetails">result</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="margin-right: 15px;">
-                      <label class="label-details">Is Available:</label>
-                      <span id="isAvailable-fromDetails">result</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="margin-right: 15px;">
-                      <label class="label-details">Is Disable:</label>
-                      <span id="isDisable-fromDetails">result</span>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- Frame with the Ids information -->
-              <div class="frame-fromDetails">
-                <div>
-                  <span>Special identifiers</span>
-                </div>
-                <hr class="lineOnFrame-fromDetails">
-                <div>
-                  <label class="label-details">IDProduct:</label>
-                  <span id="idProduct-fromDetails">result</span>
-                </div>
-  
-                <div>
-                  <label class="label-details">UID:</label>
-                  <span id="Uid-fromDetails">result</span>
-                </div>
-              </div>
-              
-          </section>
-
-          <footer class="modal-card-foot">
-            <button type="submit" class="button is-success">
-                <span> Close </span>
-            </button>
-          </form>
-          </footer>
-        </div>
-    </div>
-
-    <!-- Link to Js files -->
-    <script  src="js/app.js"></script>    
-</body>
+      <!-- Link to Js files -->
+      <script  src="js/app.js"></script>    
+  </body>
 </html>

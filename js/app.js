@@ -4,7 +4,6 @@ Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
 1. login de la base as a administrator of the database.
 2. Colocar el usuario administrado que esta ligueado en el top
-6. how to hide the cursor at the start or end of the table
 7. configurar mi tipografia mejor hecho
 ---------------------------------------------------------------------------------------------------
 **/
