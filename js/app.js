@@ -26,6 +26,7 @@ var stateOfOrder = 1;
 const modalInsertProduct = document.getElementById('modal-insert-product')
 const modalUpdateProduct = document.getElementById('modal-update-product')
 const modalShowDetails = document.getElementById('modal-show-details')
+const modalUsersAuth = document.getElementById('modal-user-auth')
 //==========================================================================
 
 // button to Insert New Product
@@ -39,6 +40,7 @@ const closeModalUpdateProduct_btn = document.getElementById('closeUpdateModal')
 const insertProductForm = document.getElementById('newProduct-form')
 const updateProductForm = document.getElementById('updateProduct-form')
 const showDetailsForm = document.getElementById('showDetails-form')
+const usersAuthForm = document.getElementById('user-auth-form')
 
 // const images on forms
 const visor_InsertForm = document.getElementById('Image-load') // Insert Product Form
@@ -84,6 +86,9 @@ function closeModal_UpdateProduct(){ clearformFormUpdate(); modalUpdateProduct.c
 // funcion to show and close de Show Details Modal
 function showModal_showDetails(){ modalShowDetails.classList.add('modal-show-details'); }
 function closeModal_showDetails(){ clearformFromDetails(); modalShowDetails.classList.remove('modal-show-details'); }
+
+function showModal_UsersAuth(){ modalUsersAuth.classList.add('modal-users-auth') }
+function closeModal_UsersAuth(){ modalUsersAuth.classList.remove('modal-users-auth') }
 
 // function to show the hide the image if it's not ready
 function showImageVisorInsertProduct(){ visor_InsertForm.classList.remove('hide-image');}
@@ -736,8 +741,30 @@ function orderOriginContries(stringConuntry){
         else{ swal("Warning!!", "Any of the required fields are empty!!"); }
     })
 
+    // event to control the user use is authenticated correctly
+    usersAuthForm.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        firebase.auth().signInWithEmailAndPassword("jjsotoramos@hotmail.com", 'Jesr210488')
+            .then((userCredential) => {
+                var user = userCredential.user;
+                alert('validado')
+                closeModal_UsersAuth()
+                getAllDataFromDB()
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert('Error' + " => " + errorCode + " => " + errorMessage)
+            });        
+    })
+
+    // this function need to check os the login is correctly and if it's correct shoud be 
+    // posible to load the
+    showModal_UsersAuth()
+
     // Functions main call  -------------------->>>>
     configuration() // function to setup the firebase database
-    getAllDataFromDB() // function to load all the products on the table first time
+    //getAllDataFromDB() // function to load all the products on the table first time
     setEventsForOrderByColumn() // set the events for the buttons to order data on the table
 //--------------------------------------------------------------------------

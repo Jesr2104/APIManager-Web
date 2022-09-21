@@ -83,8 +83,7 @@ body{
 /**************************************************/
 /* material design size icons                     */
 /**************************************************/
-.material-icons.md-48
-{
+.material-icons.md-48{
     font-size: 48px; 
 }
 
@@ -93,31 +92,30 @@ body{
     font-size: 35px; 
 }
 
-.material-icons.md-24
-{
+.material-icons.md-24{
     font-size: 24px; 
 }
 
-.material-icons.md-18
-{
+.material-icons.md-18{
     font-size: 18px; 
 }
 
 /**************************************************/
 /* Modal - Show details                           */
 /**************************************************/
-.modal-insert-product
-{
+.modal-insert-product{
     display: flex;
 }
 
-.modal-update-product
-{
+.modal-update-product{
     display: flex;
 }
 
-.modal-show-details
-{
+.modal-show-details{
+    display: flex;
+}
+
+.modal-users-auth{
     display: flex;
 }
 

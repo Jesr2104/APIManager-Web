@@ -16,6 +16,7 @@
 
       <!-- Import to Firebase library -->
       <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js"></script>
 
@@ -549,6 +550,58 @@
             </form>
             </footer>
           </div>
+      </div>
+
+      <!-- card for implement login user-->
+      <div class="modal" id="modal-user-auth">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+
+          <!-- header of the Card to show details product -->
+          <header class="modal-card-head">
+            <p style="text-align: center;" class="modal-card-title">Login</p>
+          </header>
+
+          <section class="modal-card-body">
+
+            <!-- Content ... -->
+            <form id="user-auth-form" style="padding-right: 8rem; padding-left: 8rem;">              
+
+              <div style="width: 100%; height: 170px; display: flex; justify-content: center; align-content: center; align-items: center;">
+                <img src="https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2FUser.jpg?alt=media&token=fd4a203d-b31d-4159-88e8-ae4abf149f59" style="width: 170px;">
+              </div>
+
+              <div class="field">
+                <label class="label">User (Email)</label>
+                <div class="control">
+                  <input class="input" type="text" placeholder="example@test.com">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                  <input class="input" type="text" placeholder="Password...">
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: end; align-items: center;">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Remember me
+                </label>
+              </div>              
+
+          </section>
+
+          <footer class="modal-card-foot" style="justify-content: right;">
+            <button type="submit" class="button is-success">
+              <span> Login </span>
+            </button>
+          </form>
+          </footer>
+
+        </div>
       </div>
 
       <!-- Link to Js files -->
