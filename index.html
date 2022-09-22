@@ -31,11 +31,25 @@
       <!-- Header -->
       <header>
           <nav class="navbar" role="navigation" aria-label="main navigation">
+              <!-- Name and link to the home -->
               <div class="navbar-brand"> 
                 <a class="navbar-item" href="/">
                   <span class="titleIcon material-icons md-35"> api </span>
                   <span class="titleText">Api Manager</span>
                 </a>
+              </div>
+
+              <!-- user login -->
+              <div id="LoginUser">
+                <div id="textContainerLogin">
+                  <label id="userName" for="name"></label>
+                  <p></p>
+                  <label id="SecurityLevel" for="SecurityLevel"></label>
+                  <a id="logoutLink" onclick="logoutSession()">LogOut</a>
+                </div>
+                <div id="userAvatar">
+                  <img class="circular--square" src="https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/UsersAvatar%2FUser.jpg?alt=media&token=c38059ee-7605-4d38-8ec4-69948a9a6622" alt="avatarUser">
+                </div>
               </div>
           </nav>
       </header>
@@ -568,7 +582,7 @@
             <form id="user-auth-form" style="padding-right: 8rem; padding-left: 8rem;">              
 
               <div style="width: 100%; height: 170px; display: flex; justify-content: center; align-content: center; align-items: center;">
-                <img src="https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/IconsWeb%2FUser.jpg?alt=media&token=fd4a203d-b31d-4159-88e8-ae4abf149f59" style="width: 170px;">
+                <img src="https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/UsersAvatar%2FUser.jpg?alt=media&token=c38059ee-7605-4d38-8ec4-69948a9a6622" style="width: 170px;">
               </div>
 
               <div class="field">

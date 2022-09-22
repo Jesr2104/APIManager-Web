@@ -681,6 +681,57 @@ function orderOriginContries(stringConuntry){
     return newString
 }
 
+// function to clear table of products
+function clearProductsTable(){
+    productTable.innerHTML = ""
+}
+
+// function to check of any active session
+function CheckSessionState(){
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) { // User is signed in.
+            loadUSerInformation(user)
+            closeModal_UsersAuth()
+            // function to load all the products on the table first time
+            getAllDataFromDB()
+        } else { // No user is signed in.
+            showModal_UsersAuth() // if not any active session show the login form
+        }
+      });
+}
+
+// hide user logged in section
+function hideUserLoggedSection(){
+    document.getElementById('LoginUser').innerHTML = "display: none;"
+}
+
+// load the login user information
+function loadUSerInformation(credentialUser){
+
+    var user = document.getElementById('userName')
+    var level = document.getElementById('SecurityLevel')
+
+    user.textContent = credentialUser.multiFactor.user.email 
+    level.textContent = "Administrator"
+
+    /**
+     * Cosas que falta aqui
+     * 1. traer la informacion completa de la base de datos
+     * 2. 
+     */
+}
+
+// function to logout the user session
+function logoutSession(){
+    firebase.auth().signOut().then(() => {
+        CheckSessionState()
+        //hideUserLoggedSection()
+        clearProductsTable()
+    }).catch((error) => {
+        alert(error)
+    });
+}
+
 // Events control -------------------->>>>
 //-------------------------------------------------------------------------
     // event to the button insert product
@@ -744,27 +795,27 @@ function orderOriginContries(stringConuntry){
     // event to control the user use is authenticated correctly
     usersAuthForm.addEventListener('submit', async (e) => {
         e.preventDefault()
+        var AuthVar = firebase.auth()
 
-        firebase.auth().signInWithEmailAndPassword("jjsotoramos@hotmail.com", 'Jesr210488')
-            .then((userCredential) => {
-                var user = userCredential.user;
-                alert('validado')
+        AuthVar.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .then(() => {
+            AuthVar.signInWithEmailAndPassword("jjsotoramos@hotmail.com", 'Jesr210488')
+            .then((userCredential) => {     
+                loadUSerInformation(userCredential.user)
                 closeModal_UsersAuth()
-                getAllDataFromDB()
+                getAllDataFromDB()            
             })
             .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 alert('Error' + " => " + errorCode + " => " + errorMessage)
-            });        
+                // controlar los eventos de contraseña mala y usuario malo
+            });
+        })            
     })
-
-    // this function need to check os the login is correctly and if it's correct shoud be 
-    // posible to load the
-    showModal_UsersAuth()
 
     // Functions main call  -------------------->>>>
     configuration() // function to setup the firebase database
-    //getAllDataFromDB() // function to load all the products on the table first time
+    CheckSessionState()    
     setEventsForOrderByColumn() // set the events for the buttons to order data on the table
 //--------------------------------------------------------------------------

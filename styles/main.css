@@ -406,3 +406,44 @@ legend {
 .selectHeader{
     background-color: #dadada;
 }
+
+/**************************************************/
+/* User login card                                */
+/**************************************************/
+.circular--square {
+    width: 75px; 
+    height: 75px;
+    border-radius: 50%;
+}
+
+#LoginUser{
+    width: 100%; 
+    display: flex; 
+    justify-content: end; 
+    align-items: center; 
+    padding-right: 2rem;
+}
+
+#textContainerLogin{
+    color: white; 
+    padding-right: 15px;
+}
+
+#userName{
+    display: flex; 
+    justify-content: end; 
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+#SecurityLevel{
+    display: flex; 
+    justify-content: end; 
+    font-size: 12px;
+}
+
+#logoutLink{
+    display: flex; 
+    justify-content: end;
+}
