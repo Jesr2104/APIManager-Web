@@ -711,7 +711,7 @@ function loadUSerInformation(credentialUser){
 
     var user = document.getElementById('userName')
     var level = document.getElementById('SecurityLevel')
-    var avatar = document.getElementById('userAvatar')
+    var avatar = document.getElementById('userAvatarIMG')
 
     const dbRef = firebase.database().ref()
     dbRef.child(endpointUsersDB).get().then((snapshot) => {
@@ -719,8 +719,6 @@ function loadUSerInformation(credentialUser){
             snapshot.forEach(childSnapshot => {
                 item = childSnapshot.val()                
                 if(item.email === credentialUser.multiFactor.user.email){
-                    console.log(item)
-
                     user.textContent = item.nameUser
                     level.textContent = item.accessLevel
                     avatar.src = item.avatar
