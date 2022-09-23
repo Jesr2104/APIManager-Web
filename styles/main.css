@@ -410,15 +410,19 @@ legend {
 /**************************************************/
 /* User login card                                */
 /**************************************************/
+.showPanelUserLogin{
+    display: flex !important;
+}
+
 .circular--square {
     width: 75px; 
     height: 75px;
     border-radius: 50%;
 }
 
-#LoginUser{
+#loginUser{
     width: 100%; 
-    display: flex; 
+    display: none;
     justify-content: end; 
     align-items: center; 
     padding-right: 2rem;

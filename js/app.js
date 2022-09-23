@@ -7,9 +7,10 @@ Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
 **/
 
-// vars
+// vars 
 //--------------------------------------------------------------------------
-const endPointDB = 'productListDB'
+const endpointProductsDB = 'productListDB'
+const endpointUsersDB = 'usersListDB'
 const endPointStore = 'ImageStore'
 const iconSize = '15px'
 const currency = '£'
@@ -93,6 +94,10 @@ function closeModal_UsersAuth(){ modalUsersAuth.classList.remove('modal-users-au
 // function to show the hide the image if it's not ready
 function showImageVisorInsertProduct(){ visor_InsertForm.classList.remove('hide-image');}
 function hideImageVisorInsertProduct(){ visor_InsertForm.classList.add('hide-image');}
+
+// show and hide the panel of the logged users
+function showPanelUserLogin(){ document.getElementById('loginUser').classList.add('showPanelUserLogin') }
+function removePanelUserLogin(){ document.getElementById('loginUser').classList.remove('showPanelUserLogin') }
 
 // function to clear all the form fields
 function clearInsertForm(){
@@ -331,7 +336,7 @@ function remoreProductFromDataBase(Uid){
     // function to delete the fiche from the storage
     deleteImageProduct(Uid)
     // reference to delete the rest on the information to the firebase
-    firebase.database().ref(`${endPointDB}/${Uid}`).remove()
+    firebase.database().ref(`${endpointProductsDB}/${Uid}`).remove()
 }
 
 // function to load the items of table from the database
@@ -380,7 +385,7 @@ function loadDataOnTable(productList){
 function linkShowDetails(idLink){
     showModal_showDetails()
 
-    firebase.database().ref(`${endPointDB}/${idLink}`).once('value')
+    firebase.database().ref(`${endpointProductsDB}/${idLink}`).once('value')
     .then((thisProduct) => {
         const data = thisProduct.val()
 
@@ -444,7 +449,7 @@ function buttonDelete(idbutton){
 function buttonEdit(idbutton){
     showModal_UpdateProduct()
 
-    firebase.database().ref(`${endPointDB}/${idbutton}`).once('value')
+    firebase.database().ref(`${endpointProductsDB}/${idbutton}`).once('value')
     .then((thisProduct) => {
         const data = thisProduct.val()
 
@@ -496,7 +501,7 @@ async function updateInfoOnServer(values){
         // the image is the same as before
         else { resultImage = updateProductForm['Image-load-udate-form'].src }
 
-        firebase.database().ref(`${endPointDB}/${idProduct}`).update({
+        firebase.database().ref(`${endpointProductsDB}/${idProduct}`).update({
             productName: updateProductForm['productName'].value,
             origin: updateProductForm['origin'].value,
             price: updateProductForm['price'].value,
@@ -529,7 +534,7 @@ function deleteImageProduct(Uid){
     const storageRef = firebase.storage().ref();
 
     // get que name of the imagen product
-    dbRef.child(endPointDB).get().then((snapshot) => {
+    dbRef.child(endpointProductsDB).get().then((snapshot) => {
         if(snapshot.exists()) {
             snapshot.forEach(childSnapshot => {productList.push(childSnapshot.val())})
             
@@ -602,7 +607,7 @@ function getCategoryIcon(categoryNumber){
 // function to get all the products from the database a load it on the table
 function getAllDataFromDB(){
     const dbRef = firebase.database().ref()
-    dbRef.child(endPointDB).get().then((snapshot) => {
+    dbRef.child(endpointProductsDB).get().then((snapshot) => {
         if(snapshot.exists()) {
             var productList = [];
             snapshot.forEach(childSnapshot => {
@@ -691,6 +696,7 @@ function CheckSessionState(){
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) { // User is signed in.
             loadUSerInformation(user)
+            showPanelUserLogin() // show the panel of the login users
             closeModal_UsersAuth()
             // function to load all the products on the table first time
             getAllDataFromDB()
@@ -700,33 +706,42 @@ function CheckSessionState(){
       });
 }
 
-// hide user logged in section
-function hideUserLoggedSection(){
-    document.getElementById('LoginUser').innerHTML = "display: none;"
-}
-
 // load the login user information
 function loadUSerInformation(credentialUser){
 
     var user = document.getElementById('userName')
     var level = document.getElementById('SecurityLevel')
+    var avatar = document.getElementById('userAvatar')
 
-    user.textContent = credentialUser.multiFactor.user.email 
-    level.textContent = "Administrator"
+    const dbRef = firebase.database().ref()
+    dbRef.child(endpointUsersDB).get().then((snapshot) => {
+        if(snapshot.exists()) {
+            snapshot.forEach(childSnapshot => {
+                item = childSnapshot.val()                
+                if(item.email === credentialUser.multiFactor.user.email){
+                    console.log(item)
 
-    /**
-     * Cosas que falta aqui
-     * 1. traer la informacion completa de la base de datos
-     * 2. 
-     */
+                    user.textContent = item.nameUser
+                    level.textContent = item.accessLevel
+                    avatar.src = item.avatar
+                }                
+            });
+            
+        } else { 
+            // case: data base is empty
+            console.log("the users is not available")
+        }
+    })
+    .catch ((error) => {
+        console.error(error);
+    })    
 }
 
 // function to logout the user session
 function logoutSession(){
     firebase.auth().signOut().then(() => {
-        CheckSessionState()
-        //hideUserLoggedSection()
-        clearProductsTable()
+        removePanelUserLogin() // hide the panel of the login users
+        clearProductsTable() // clear all the products from the table
     }).catch((error) => {
         alert(error)
     });
@@ -756,7 +771,7 @@ function logoutSession(){
         
         // refence of the data base
         // **************************
-        const databaseRef = firebase.database().ref(endPointDB)
+        const databaseRef = firebase.database().ref(endpointProductsDB)
         const postRef = databaseRef.push() 
 
         // load image of the product
@@ -802,14 +817,23 @@ function logoutSession(){
             AuthVar.signInWithEmailAndPassword("jjsotoramos@hotmail.com", 'Jesr210488')
             .then((userCredential) => {     
                 loadUSerInformation(userCredential.user)
+                showPanelUserLogin()
                 closeModal_UsersAuth()
                 getAllDataFromDB()            
             })
             .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                alert('Error' + " => " + errorCode + " => " + errorMessage)
-                // controlar los eventos de contraseña mala y usuario malo
+
+                if(errorCode === "auth/user-not-found"){
+                    var pureMessage = errorMessage.replace("(auth/user-not-found).", '').replace("Firebase: ", '')
+                    swal(`Invalid user!`, pureMessage);
+                } else if(errorCode === "auth/wrong-password"){
+                    var pureMessage = errorMessage.replace("(auth/wrong-password).", '').replace("Firebase: ", '')
+                    swal(`Invalid password!`, pureMessage);
+                } else {
+                    swal(`error!`, errorMessage);
+                }
             });
         })            
     })
