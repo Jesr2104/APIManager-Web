@@ -809,10 +809,16 @@ function logoutSession(){
     usersAuthForm.addEventListener('submit', async (e) => {
         e.preventDefault()
         var AuthVar = firebase.auth()
+        var userEmail = document.getElementById('emailUserForm')
+        var userPassword = document.getElementById('passwordUserForm')
+
+        /**
+         * 1. falta chequear duracion de la session
+         */
 
         AuthVar.setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(() => {
-            AuthVar.signInWithEmailAndPassword("jjsotoramos@hotmail.com", 'Jesr210488')
+            AuthVar.signInWithEmailAndPassword(userEmail.value, userPassword.value)
             .then((userCredential) => {     
                 loadUSerInformation(userCredential.user)
                 showPanelUserLogin()
