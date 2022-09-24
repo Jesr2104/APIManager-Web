@@ -2,8 +2,7 @@
 ---------------------------------------------------------------------------------------------------
 Lista de tareas por realizar
 ---------------------------------------------------------------------------------------------------
-1. login de la base as a administrator of the database.
-2. Colocar el usuario administrado que esta ligueado en el top
+done!
 ---------------------------------------------------------------------------------------------------
 **/
 
@@ -811,12 +810,15 @@ function logoutSession(){
         var AuthVar = firebase.auth()
         var userEmail = document.getElementById('emailUserForm')
         var userPassword = document.getElementById('passwordUserForm')
+        var saveSeassion = document.getElementById('saveSession').checked
+        var persistence = firebase.auth.Auth.Persistence.SESSION        
 
-        /**
-         * 1. falta chequear duracion de la session
-         */
+        // if the user select save session we change the persistence for local
+        if(saveSeassion){
+            persistence = firebase.auth.Auth.Persistence.LOCAL
+        }
 
-        AuthVar.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        AuthVar.setPersistence(persistence)
         .then(() => {
             AuthVar.signInWithEmailAndPassword(userEmail.value, userPassword.value)
             .then((userCredential) => {     
