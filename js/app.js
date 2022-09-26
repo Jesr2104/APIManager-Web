@@ -743,7 +743,7 @@ function logoutSession(){
         removePanelUserLogin() // hide the panel of the login users
         clearProductsTable() // clear all the products from the table
     }).catch((error) => {
-        alert(error)
+        swal ( "Oops" ,  "Something went wrong!" , error)
     });
 }
 
