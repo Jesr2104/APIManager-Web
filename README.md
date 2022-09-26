@@ -1,3 +1,4 @@
+<img style="width: 100%; height: auto;" src="https://firebasestorage.googleapis.com/v0/b/myprojects-jesr2104.appspot.com/o/main-screen.jpg?alt=media&token=8da6d0b3-bc46-4747-b9ce-e0e5e7fa84bc">
 <h1> Api Manager </h1>
 
 <p> 
@@ -28,7 +29,7 @@
 <h2>Programming languages and framework used.</h2>
 <table>
     <tr>
-        <th>Programming languages</th>
+        <th>Programming languages.</th>
     </tr>
     <tr> 
         <td>
@@ -40,7 +41,7 @@
 </table>
 
 <table>
-    <tr> <th> Database and storage </th> </tr>
+    <tr> <th> Database and storage. </th> </tr>
     <tr> <td> Firebase DataBase Realtime </td> </tr>
     <tr> <td> Firebase storage </td> </tr>
 </table>
@@ -52,6 +53,13 @@
     <tr> <td> Google Font Material design icons</td> </tr>
 </table>
 
-<h2>Link to the project</h2>
+<h2>Link to the project.</h2>
 
 <a href="https://jesr2104.github.io/APIManager-Web/">Jump to the APIManager-Web</a>
+
+<h2>Gallery of the project.</h2>
+
+
+<div class="galleria" style="display: flex; justify-content: space-between;">
+    <img src="https://firebasestorage.googleapis.com/v0/b/myprojects-jesr2104.appspot.com/o/gallery.jpg?alt=media&token=40a4ddd7-73b6-4530-96df-8dcf9b87e169">
+</div>
