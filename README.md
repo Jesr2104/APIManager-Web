@@ -61,5 +61,5 @@
 
 
 <div class="galleria" style="display: flex; justify-content: space-between;">
-    <img src="https://firebasestorage.googleapis.com/v0/b/myprojects-jesr2104.appspot.com/o/gallery.jpg?alt=media&token=40a4ddd7-73b6-4530-96df-8dcf9b87e169">
+    <img src="https://firebasestorage.googleapis.com/v0/b/myprojects-jesr2104.appspot.com/o/gallery.jpg?alt=media&token=1047e219-886c-4e93-af43-dd27cbce20ea">
 </div>
