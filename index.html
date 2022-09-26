@@ -106,7 +106,10 @@
 
             <!-- header of the Card to insert new product -->
             <header class="modal-card-head">
-              <p class="modal-card-title">Insert new product</p>
+              <p class="modal-card-title">
+                <span class="titleIcon material-icons md-24"> double_arrow </span>
+                Insert new product
+              </p>
               <button class="delete" aria-label="close" id="closeRegisterModal"></button>
             </header>
             
@@ -277,7 +280,10 @@
 
             <!-- header of the Card to insert new product -->
             <header class="modal-card-head">
-              <p class="modal-card-title">Update product</p>
+              <p class="modal-card-title">
+                <span class="titleIcon material-icons md-24"> double_arrow </span>
+                Update product
+              </p>
               <button class="delete" aria-label="close" id="closeUpdateModal"></button>
             </header>
             
@@ -442,128 +448,121 @@
           </div>
       </div>
 
-      <!-- Card to show full details of the product -->
+      <!-- card for implement product details -->
       <div class="modal" id="modal-show-details">
-          <div class="modal-background"></div>
-          <div class="modal-card">
+        <div class="modal-background"></div>
+        <div class="modal-card">
 
-            <!-- header of the Card to show details product -->
-            <header class="modal-card-head">
-              <p class="modal-card-title">Product Details</p>
-            </header>
+          <!-- header of the modal -->
+          <header class="modal-card-head">
+            <p class="modal-card-title">
+              <span class="titleIcon material-icons md-24"> double_arrow </span>
+              Product Details
+            </p>
+            <button class="delete" aria-label="close" id="closeShowDetailsModal">
+          </header>
 
-            <!-- section of the form to wrap all form -->
-            <section class="modal-card-body">
+          <!-- main container -->
+          <div id="main-seccion-product-details">
 
-              <!-- Content ... -->
-              <form id="showDetails-form">
+            <!-- Seccion for the Imagen of product -->
+            <div id="imageSeccion">
+              <img id="productImage-FormDetails" src="https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/ImageStore%2Ffruit_red_apple.jpg?alt=media&token=0733a1b9-0cb6-495f-8f48-82b7f6ab1974">             
+            </div>
 
-                <table style="width: 100%;">
-                  <tr>
-                    <td>
-                      <img id="imageProduct-fromDetails" src="" width="160" height="200">
-                    </td>
-                    <td>
-                      <!-- first code block ==> name, category, origin -->
-                      <div>
-                        <label class="label-details">Product Name:</label>
-                        <p></p>
-                        <span id="productName-fromDetails"></span>
-                      </div>
+            <!-- seccion for the product Information -->
+            <div id="informationSeccion">
 
-                      <div>
-                        <label class="label-details">Category:</label>
-                        <p></p>
-                        <img id="iconCategory-fromDetails" src=" " width="15px" height="15px">
-                        <span id="caregory-fromDetails">result</span>
-                      </div>
-
-                      <div>
-                        <label class="label-details">Product Origin:</label>
-                        <p></p>
-                        <span id="origin-fromDetails">result</span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-
-                <!-- second code block ==> description, price, discount, MOQ -->
-                <div>
-                  <label class="label-details">Description:</label>
-                  <p></p>
-                  <span id="Description-fromDetails">result</span>
-                </div>
-                
-                <div style="margin-top: 12px;">
-                  <label class="label-details">Price:</label>
-                  <span id="price-fromDetails">result</span>
-                </div>
-
-                <div>
-                  <label class="label-details">Discount:</label>
-                  <span id="Discount-fromDetails">result</span>
-                </div>
-                
-                <div>
-                  <label class="label-details">MOQ:</label>
-                  <span id="MOQ-fromDetails">result</span>
-                </div> 
-                
-                <div style="margin-top: 12px;">
-                  <label class="label-details">Date of Inserted:</label>
-                  <span id="date-fromDetails">result</span>
-                </div>
-
-                <!-- third code block ==> season, available, disable -->
-                <table id="tablechecks">
-                  <tr>
-                    <td>
-                      <div style="margin-right: 15px;">
-                        <label class="label-details">In Season:</label>
-                        <span id="inSeason-fromDetails">result</span>
-                      </div>
-                    </td>
-                    <td>
-                      <div style="margin-right: 15px;">
-                        <label class="label-details">Is Available:</label>
-                        <span id="isAvailable-fromDetails">result</span>
-                      </div>
-                    </td>
-                    <td>
-                      <div style="margin-right: 15px;">
-                        <label class="label-details">Is Disable:</label>
-                        <span id="isDisable-fromDetails">result</span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-
-                <!-- Frame with the Ids information -->
-                <div class="frame-fromDetails">
-                  <div>
-                    <span>Special identifiers</span>
-                  </div>
-                  <hr class="lineOnFrame-fromDetails">
-                  <div>
-                    <label class="label-details">IDProduct:</label>
-                    <span id="idProduct-fromDetails">result</span>
-                  </div>
-    
-                  <div>
-                    <label class="label-details">UID:</label>
-                    <span id="Uid-fromDetails">result</span>
+              <!-- Product name and category -->
+              <div id="" style="display: flex; width: 100%;">
+                <div style="width: 50%;">
+                  <!-- container of label product name -->
+                  <div style="display: contents; width: 50%;">
+                    <label style="font-size: 12px;">Product Name:</label> 
+                    <hr id="lineUnderProductName"/>
                   </div>
                 </div>
-                
-            </section>
+                <div style="width: 50%; display: flex; justify-content: end;">
+                  <!-- container of the category label -->
+                  <div>
+                    <label id="labelCategory-FormDetails"></label>
+                  </div>
+                </div>
+              </div>
 
-            <footer class="modal-card-foot">
-              <button type="submit" class="button is-success">
-                  <span> Close </span>
-              </button>
-            </form>
-            </footer>
+              <!-- container of product name -->
+              <div> 
+                <label id="productName-formDetails">Washington Apple</label>
+              </div>
+
+              <!-- container of description of product -->
+              <div>
+                <p id="description-formDetails"></p>
+              </div>
+
+              <!-- container of MOQ, Discount and price -->
+              <div id="container-value">
+                <div id="MOQ-formDetails"></div>
+                <div id="showDiscount">
+                  <label id="price-formDetails"></label>
+                  <label id="discount-formDetails"></label>
+                </div>
+                <div> <label id="finalPrice-formDetails">1,98 £</label> </div>
+              </div>
+
+              <!-- container spacer red line -->
+              <div style="display: flex; justify-content: center;">                
+                <hr id="separeLine"/>                
+              </div>
+
+              <div style="padding-top: 20px; padding-bottom: 20px;  font-size: 12px; color: #829ba7">
+                
+                <!-- information of the origin of the product -->
+                <div style="display: flex;">
+                  <label>Origin&nbsp;&nbsp;</label> <p id="origin-formDetails"></p>
+                </div>
+
+                <!-- date when the product was inserted -->
+                <div style="display: flex;">
+                  <label>Date of inserted:&nbsp;&nbsp;</label> <p id="dateInserted-formDetails"></p>
+                </div>               
+
+                <!-- seccion to show the property Season, Available, Disable -->
+                <div id="containerCheckbox">
+                  <!-- InSeason -->
+                  <div style="display: flex;">
+                    <label>In Season:&nbsp;&nbsp;</label> <p class="checkboxes" id="inSeason-formDetails"></p>    
+                  </div>
+                  <!-- isAvailable -->
+                  <div style="display: flex;">
+                    <label>Is Available:&nbsp;&nbsp;</label> <p class="checkboxes" id="isAvailable-formDetails"></p>
+                  </div>
+                  <!-- isDisable -->
+                  <div style="display: flex;">
+                    <label>Is Disable:&nbsp;&nbsp;</label> <p class="checkboxes" id="isDisable-formDetails"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Container of products IDs -->
+              <div style="font-size: 12px; padding-left: 1.5rem; color: #829ba7">
+                <!-- IDProduct -->
+                <div style="display: flex;">
+                  <label class="checkboxes">IDProduct:&nbsp;&nbsp;</label> <p id="IDProduct-formDetails"></p>
+                </div>
+                <!-- UID -->
+                <div style="display: flex;">
+                  <label class="checkboxes">UID:&nbsp;&nbsp;</label> <p id="UID-formDetails"></p>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- button to close the modal -->
+          <button type="submit" id="buttonCloseModalDetails" class="button is-success">
+            <span> Close </span>
+          </button>
+        </div>  
       </div>
 
       <!-- card for implement login user-->
@@ -624,115 +623,7 @@
         </div>
       </div>
 
-      <!-- card for implement product details -->
-      <div class="modal" style="display: flex;" id="modal-show-details1">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-
-          <!-- header of the modal -->
-          <header class="modal-card-head">
-            <p class="modal-card-title" style="color: black; font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 2rem;">
-              <span class="titleIcon material-icons md-24" style="color: rgb(112, 112, 112);"> 
-                radio_button_checked 
-              </span> Product Details
-            </p>
-            <button class="delete" aria-label="close" style="background-color: #c60a1a;"></button>
-          </header>
-
-          <!-- main container -->
-          <div id="main-seccion-product-details" style="display: flex;">
-
-            <!-- Seccion for the Imagen of product -->
-            <div style="background-color: rgb(186, 186, 186); width: 30%; padding: 10px;">
-              <img style="border-radius: 10px; " src="https://firebasestorage.googleapis.com/v0/b/grocerystore-justjump.appspot.com/o/ImageStore%2Ffruit_red_apple.jpg?alt=media&token=0733a1b9-0cb6-495f-8f48-82b7f6ab1974" alt="">             
-            </div>
-
-            <!-- seccion for the product Information -->
-            <div style="background-color: #f5f5f5; width: 70%; padding-left: 3rem; padding-right: 3rem; padding-bottom: 3rem; padding-top: 10px;">
-
-              <!-- Product name and category -->
-              <div style="display: flex; width: 100%;">
-                <div style="width: 50%;">
-                  <!-- container of label product name -->
-                  <div style="display: contents; width: 50%;">
-                    <label style="font-size: 12px;">Product Name:</label> 
-                    <hr style="background-color: #c60a1a; width: 30%; margin-top: 0px; margin-bottom: 5px;"/>
-                  </div>
-                </div>
-                <div style="width: 50%; display: flex; justify-content: end;">
-                  <!-- container of the category label -->
-                  <div>
-                    <label style="background-color: #c60a1a; padding: 3px 12px 3px 12px; border-radius: 20px; font-size: 10px; color: #f5f5f5;"> Fruit</label>
-                  </div>
-                </div>
-              </div>
-
-              <!-- container of product name -->
-              <div id="Title-product"> 
-                <label style="color: black; font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 2.5rem;">Washington Apple</label>
-              </div>
-
-              <!-- container of description of product -->
-              <div style="padding-top: 10px; padding-bottom: 10px;">
-                <p style="font-size: 10px;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-              </div>
-
-              <!-- container of MOQ, Discount and price -->
-              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; font-size: 24px; font-family: 'Roboto', sans-serif;">
-                <div style="font-weight: 700; color: #737471">8 Units</div>
-                <div style="font-weight: 700; color:#737471"><label style="font-weight: 900;">2,20 £</label> <label style="color:rgb(190, 190, 190); font-size: 20px;">-10%</label></div>
-                <div style="font-size: 2rem; font-weight: 900;">1,98 £</div>
-              </div>
-
-              <!-- container spacer red line -->
-              <div style="width: 100%; display: flex; justify-content: center;">                
-                <hr style="background-color: #c60a1a; width: 80%; height: 3px; margin-top: 0px; margin-bottom: 0px; border-radius: 10px;"/>                
-              </div>
-
-              <div style="padding-top: 20px; padding-bottom: 20px;  font-size: 12px; color: #829ba7">
-                <!-- date when the product was inserted -->
-                <div style="display: flex;">
-                  <label>Date of inserted:&nbsp;&nbsp;</label> <p style="font-family: 'Roboto', sans-serif; font-weight: 700; ">2022/09/01</p>
-                </div> 
-
-                <!-- seccion to show the property Season, Available, Disable -->
-                <div style="display: flex; font-size: 12px; justify-content: space-between; color: #829ba7;">
-                  <!-- InSeason -->
-                  <div style="display: flex;">
-                    <label>In Season:&nbsp;&nbsp;</label> <p style="font-family: 'Roboto', sans-serif; font-weight: 700;">True</p>    
-                  </div>
-                  <!-- isAvailable -->
-                  <div style="display: flex;">
-                    <label>Is Available:&nbsp;&nbsp;</label> <p style="font-family: 'Roboto', sans-serif; font-weight: 700;">True</p>
-                  </div>
-                  <!-- isDisable -->
-                  <div style="display: flex;">
-                    <label>Is Disable:&nbsp;&nbsp;</label> <p style="font-family: 'Roboto', sans-serif; font-weight: 700;">True</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Container of products IDs -->
-              <div style="font-size: 12px; padding-left: 1.5rem; color: #829ba7">
-                <!-- IDProduct -->
-                <div style="display: flex;">
-                  <label style="font-family: 'Roboto', sans-serif; font-weight: 700;">IDProduct:&nbsp;&nbsp;</label> <p>119e019e-ab50-4f5c-9441-7f4b938b4664</p>
-                </div>
-                <!-- UID -->
-                <div style="display: flex;">
-                  <label style="font-family: 'Roboto', sans-serif; font-weight: 700;">UID:&nbsp;&nbsp;</label> <p>-NBsdmOVwviaem_WVkDc</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- button to close the modal -->
-          <button type="submit" class="button is-success" style="background-color: #c60a1a; font-family: 'Roboto', sans-serif; font-size: 16px; font-weight: 500;">
-            <span> Close </span>
-          </button>
-
-        </div>  
-      </div>
+      
 
       <!-- Link to Js files -->
       <script  src="js/app.js"></script>    

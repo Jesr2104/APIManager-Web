@@ -35,11 +35,12 @@ const insertProduct_btn = document.getElementById('insertProduct')
 // close the modals Buttons
 const closeModalInsertProduct_btn = document.getElementById('closeRegisterModal')
 const closeModalUpdateProduct_btn = document.getElementById('closeUpdateModal')
+const closeModalShowDetails_btn = document.getElementById('closeShowDetailsModal')
 
 // const to the form (newProduc - UpdateProduct - ShowDetails)
 const insertProductForm = document.getElementById('newProduct-form')
 const updateProductForm = document.getElementById('updateProduct-form')
-const showDetailsForm = document.getElementById('showDetails-form')
+//const showDetailsForm = document.getElementById('modal-show-details')
 const usersAuthForm = document.getElementById('user-auth-form')
 
 // const images on forms
@@ -87,6 +88,7 @@ function closeModal_UpdateProduct(){ clearformFormUpdate(); modalUpdateProduct.c
 function showModal_showDetails(){ modalShowDetails.classList.add('modal-show-details'); }
 function closeModal_showDetails(){ clearformFromDetails(); modalShowDetails.classList.remove('modal-show-details'); }
 
+// function to show and hide to form to login user
 function showModal_UsersAuth(){ modalUsersAuth.classList.add('modal-users-auth') }
 function closeModal_UsersAuth(){ modalUsersAuth.classList.remove('modal-users-auth') }
 
@@ -114,20 +116,21 @@ function clearInsertForm(){
 
 // function to clear all the form full defails after to used
 function clearformFromDetails(){
-    document.getElementById("productName-fromDetails").innerHTML = ""
-    document.getElementById("caregory-fromDetails").innerHTML = ""
-    document.getElementById("iconCategory-fromDetails").src = ""
-    document.getElementById("origin-fromDetails").innerHTML = ""
-    document.getElementById("price-fromDetails").innerHTML = ""
-    document.getElementById("Discount-fromDetails").innerHTML = ""
-    document.getElementById("MOQ-fromDetails").innerHTML = ""
-    document.getElementById("Description-fromDetails").innerHTML = ""
-    document.getElementById("inSeason-fromDetails").innerHTML = ""
-    document.getElementById("isAvailable-fromDetails").innerHTML = ""
-    document.getElementById("isDisable-fromDetails").innerHTML = ""
-    document.getElementById("imageProduct-fromDetails").src = ""
-    document.getElementById("idProduct-fromDetails").innerHTML = ""
-    document.getElementById("Uid-fromDetails").innerHTML = ""
+    document.getElementById("productName-formDetails").innerText = ""
+    document.getElementById("labelCategory-FormDetails").innerHTML = ""
+    document.getElementById("origin-formDetails").innerHTML = ""
+    document.getElementById("price-formDetails").innerHTML = ""
+    document.getElementById("discount-formDetails").innerHTML = ""
+    document.getElementById("finalPrice-formDetails").innerHTML = ""
+    document.getElementById("MOQ-formDetails").innerHTML = ""
+    document.getElementById("description-formDetails").innerHTML = ""
+    document.getElementById("inSeason-formDetails").innerHTML = ""
+    document.getElementById("isAvailable-formDetails").innerHTML = ""
+    document.getElementById("isDisable-formDetails").innerHTML = ""
+    document.getElementById("productImage-FormDetails").src = ""
+    document.getElementById("IDProduct-formDetails").innerHTML = ""
+    document.getElementById("UID-formDetails").innerHTML = ""
+    document.getElementById("dateInserted-formDetails").innerHTML = ""
 }
 
 //function to clear all the form update after to used
@@ -388,23 +391,23 @@ function linkShowDetails(idLink){
     .then((thisProduct) => {
         const data = thisProduct.val()
 
-        document.getElementById("productName-fromDetails").innerHTML = data.productName
-        document.getElementById("caregory-fromDetails").innerHTML = getCategory(data.category)
-        document.getElementById("iconCategory-fromDetails").src = getCategoryIcon(data.category)
-        document.getElementById("origin-fromDetails").innerHTML = data.origin
-        document.getElementById("price-fromDetails").innerHTML =  calculateDiscount(data.discount, data.price)
-        document.getElementById("Discount-fromDetails").innerHTML = data.discount + '%'
-        document.getElementById("MOQ-fromDetails").innerHTML = data.MOQ + ' ' + data.salesUnit
-        document.getElementById("Description-fromDetails").innerHTML = checkDescriptionEmpty(data.description)
-        document.getElementById("inSeason-fromDetails").innerHTML = data.inSeason
-        document.getElementById("isAvailable-fromDetails").innerHTML = data.isAvailable
-        document.getElementById("isDisable-fromDetails").innerHTML = data.isDisable
-        document.getElementById("imageProduct-fromDetails").src = data.imageProduct
-        document.getElementById("idProduct-fromDetails").innerHTML = data.idProduct
-        document.getElementById("Uid-fromDetails").innerHTML = data.Uid
-        document.getElementById("date-fromDetails").innerHTML = data.date
+        document.getElementById("productName-formDetails").innerText = data.productName
+        document.getElementById("labelCategory-FormDetails").innerHTML = getCategory(data.category)
+        document.getElementById("origin-formDetails").innerHTML = data.origin
+        document.getElementById("price-formDetails").innerHTML = data.price + " " + currency
+        document.getElementById("discount-formDetails").innerHTML = "-" + data.discount + "%"
+        document.getElementById("finalPrice-formDetails").innerHTML = calculateDiscount(data.discount, data.price)
+        document.getElementById("MOQ-formDetails").innerHTML = data.MOQ + ' ' + data.salesUnit
+        document.getElementById("description-formDetails").innerHTML = checkDescriptionEmpty(data.description)
+        document.getElementById("inSeason-formDetails").innerHTML = data.inSeason
+        document.getElementById("isAvailable-formDetails").innerHTML = data.isAvailable
+        document.getElementById("isDisable-formDetails").innerHTML = data.isDisable
+        document.getElementById("productImage-FormDetails").src = data.imageProduct
+        document.getElementById("IDProduct-formDetails").innerHTML = data.idProduct
+        document.getElementById("UID-formDetails").innerHTML = data.Uid
+        document.getElementById("dateInserted-formDetails").innerHTML = data.date
 
-        showDetailsForm.addEventListener('submit', (e) => {
+        document.getElementById("buttonCloseModalDetails").addEventListener('click', (e) => {
             e.preventDefault();
             closeModal_showDetails();
         })
@@ -628,7 +631,7 @@ function getAllDataFromDB(){
 function calculateDiscount(discount, price){
     var result = price - (price * (discount/100))
     if(discount != '0'){
-        return `${result.toFixed(2)} ${currency} - <span style="color:#bdbdbd; text-decoration: line-through;"> ${price} ${currency}</span>`
+        return `${result.toFixed(2)} ${currency}`
     } else {
         return `${price} ${currency}`
     }
@@ -761,6 +764,7 @@ function logoutSession(){
     // button to close form
     closeModalInsertProduct_btn.addEventListener('click', closeModal_InsertProduct)
     closeModalUpdateProduct_btn.addEventListener('click', closeModal_UpdateProduct)
+    closeModalShowDetails_btn.addEventListener('click', closeModal_showDetails)
 
     // button to insert new product
     insertProductForm.addEventListener('submit', async (e) => {

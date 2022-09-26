@@ -8,6 +8,9 @@
     --white: #fff;
     --yellow: #ffb703;
     --mainColor1: #9658fe;
+    --greyMainColor: #737471;
+    --darkredMaincolor: #c60a1a;
+    --greyblueMainColor: #829ba7;
 }
 
 /**************************************************/
@@ -314,43 +317,142 @@ legend {
 /**************************************************/
 /* product details                                */
 /**************************************************/
-#title-detail-form{
-    font-size: 2.2rem;
-    font-weight: bold;
-}
+.modal-card-title{
+    color: black; 
+    font-family: 'Roboto', sans-serif; 
+    font-weight: 900; 
+    font-size: 2rem;
+  }
 
-#tablechecks{
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
+  .titleIcon{
+    color: var(--greyMainColor);
+  }
 
-#tablechecks td{
-    align-items: center;
-}
+  .delete:hover{
+    background-color: var(--darkredMaincolor);
+  }
 
-.label-details{
-    font-style: italic;
-    font-weight: bold;
-    font-size: 12px;
-    color: var(--white);
+  #main-seccion-product-details{
+    display: flex;
+  }
 
-    padding: 3px 10px 3px 5px;
-    background: var(--mainColor1);
-    border-radius: 3px;
-}
+  #imageSeccion{
+    width: 30%; 
+    background-color: rgb(186, 186, 186);
+    padding: 10px;      
+  }
 
-.frame-fromDetails{
-    border: 1px solid #b9b9b9; 
-    padding: 12px; 
-    border-radius: 4px;
-}
+  #productImage-FormDetails{
+    border-radius: 10px;
+  }
 
-.lineOnFrame-fromDetails{
-    height:1px; 
-    background: rgb(196, 196, 196); 
-    margin-top: 5px; 
+  #informationSeccion{
+    width: 70%;
+    background-color: white;
+    padding: 0.5rem 3rem 1.5rem 3rem;
+  }
+
+  #lineUnderProductName{
+    width: 30%; 
+    margin-top: 0px; 
     margin-bottom: 5px;
-}
+    background-color: var(--darkredMaincolor); 
+  }
+
+  #labelCategory-FormDetails{
+    padding: 3px 12px 3px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    color: white;
+    background-color: var(--darkredMaincolor);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  #productName-formDetails{
+    color: black; 
+    font-family: 'Roboto', sans-serif; 
+    font-weight: 900; 
+    font-size: 2.5rem;
+  }
+
+  #description-formDetails{
+    padding-top: 10px;
+    padding-bottom: 10px; 
+    font-size: 10px;
+    text-align: justify;
+  }
+
+  #container-value{
+    width: 100%; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding-bottom: 15px; 
+    font-size: 24px; 
+    font-family: 'Roboto', sans-serif;
+  }
+
+  #MOQ-formDetails{
+    font-weight: 700; 
+    color: #737471;
+  }
+
+  #price-formDetails{
+    font-weight: 900; 
+    color:#737471
+  }
+
+  #discount-formDetails{
+    color:rgb(190, 190, 190);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  #finalPrice-formDetails{
+    font-size: 2rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 2px #9c9c9ca5;
+  }
+
+  #separeLine{
+    background-color: var(--darkredMaincolor); 
+    width: 80%; 
+    height: 3px; 
+    margin-top: 0px; 
+    margin-bottom: 0px; 
+    border-radius: 10px;
+  }
+
+  #origin-formDetails{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+  }
+
+  #dateInserted-formDetails{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700; 
+  }
+
+  #containerCheckbox{
+    display: flex;
+    font-size: 12px; 
+    justify-content: space-between; 
+    color: var(--greyblueMainColor);
+  }
+
+  .checkboxes{
+    font-family: 'Roboto', sans-serif; 
+    font-weight: 700;
+  }
+
+  #buttonCloseModalDetails{
+    background-color: var(--darkredMaincolor); 
+    font-family: 'Roboto', sans-serif; 
+    font-size: 16px; 
+    font-weight: 500;
+  } 
 
 /**************************************************/
 /* Property for over text on the table            */
