@@ -2,28 +2,28 @@
 <h1> Api Manager </h1>
 
 <p> 
-  The project is a Web application to administrate the API, with the CRUD operations essencials to
-  have the tool with which you can insert the data to the API with groseries products, that will be 
-  consulted from the Android application which it allow to buy you fruit and vegetables.
+  The project is a Web application to administrate the API, with the CRUD essential operations to
+  have the tool which one you can insert the data to the API with grocery products, that will be 
+  consulted from the Android application which allows you to buy fruit and vegetables.
 
-  the WebApp need to have a user account with administration privileges as just the administrate can
-  modificate and insert a new data on the API.
+  The WebApp needs to have an user account with administrator privileges, hence the administrator can
+  modify and insert new data in the API.
 
-  apart from this funcionalis the WebApp check and organized the information before the insert it in
-  the API, and thus guarantee the validity of the data and information in the API. as well it orginize
+  Apart from this funcionality, the WebApp checks and organizes the information before it is inserted in
+  the API, and thus guarantee the validity of the data and information in the API. It also organizes
   the picture of the products on the firebase storage.
 </p>
 
 <h2>Functionalities implemented in the project.</h2>
 <table>
-  <tr> <td>+ CRUD, de la base de datos productos Create, Read, Update, Delete.</td> </tr>
+  <tr> <td>+ CRUD, the products data base (Create, Read, Update, Delete).</td> </tr>
   <tr> <td>+ Setup of the Firebase tools Auth, Storage and Realtime DB.</td> </tr>
   <tr> <td>+ Sort data on table by column('name, origin, price, discount, category, sales unit').</td> </tr>
   <tr> <td>+ Select image of the product and show it on the visor.</td> </tr>
   <tr> <td>+ Search information on the table.</td> </tr>
   <tr> <td>+ Sort origin before to insert. </td> </tr>
   <tr> <td>+ Login user with email and passwrod. </td> </tr>
-  <tr> <td>+ Check if is any active session. </td> </tr>
+  <tr> <td>+ Check if there is any active session. </td> </tr>
 </table>
 
 <h2>Programming languages and framework used.</h2>
